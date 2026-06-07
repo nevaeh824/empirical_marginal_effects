@@ -245,6 +245,49 @@ def compact_group_table(path):
     )
 
 
+def table1_descriptive_stats(path):
+    if not path.exists():
+        return "_Table 1 descriptive statistics were not generated._"
+    rows = []
+    symbols = {
+        "s_it": "$$s_{it}$$",
+        "G_it": "$$G_{it}$$",
+        "B_it": "$$B_{it}$$",
+        "X_it": "$$X_{it}$$",
+    }
+    for row in read_csv_dicts(path):
+        symbol = row.get("symbol", "")
+        rows.append(
+            [
+                row.get("block", ""),
+                row.get("variable", ""),
+                symbols.get(symbol, f"`{symbol}`" if symbol else ""),
+                f"`{row.get('source', '')}`",
+                row.get("N", ""),
+                fmt_float(row.get("mean")),
+                fmt_float(row.get("sd")),
+                fmt_float(row.get("median")),
+                fmt_float(row.get("min")),
+                fmt_float(row.get("max")),
+            ]
+        )
+    return md_table(
+        [
+            "Block",
+            "Variable",
+            "Symbol",
+            "Source",
+            "N",
+            "Mean",
+            "SD",
+            "Median",
+            "Min",
+            "Max",
+        ],
+        rows,
+    )
+
+
 def country_theta_screen_tables():
     cutoff_row = kink_selected_row(RESULT / "table7_deltaB_kink_selected_cutoff_notheta.csv")
     if not cutoff_row:
@@ -384,6 +427,88 @@ def country_theta_screen_tables():
     )
 
 
+def coef_t_cell(row, b_key, t_key, p_key):
+    b = safe_float(row.get(b_key))
+    if b is None:
+        return ""
+    t = safe_float(row.get(t_key))
+    t_part = "" if t is None else f" ({fmt_float(t)})"
+    return f"{fmt_float(b)}{stars(row.get(p_key))}{t_part}"
+
+
+def appendix_debt_control_variants_table(path):
+    if not path.exists():
+        return "_Appendix debt-change control variants were not generated._"
+    rows = []
+    for row in read_csv_dicts(path):
+        rows.append(
+            [
+                row.get("model", ""),
+                row.get("control_set", ""),
+                coef_t_cell(row, "b_G", "t_G", "p_G"),
+                coef_t_cell(row, "b_Gtheta", "t_Gtheta", "p_Gtheta"),
+                coef_t_cell(row, "b_theta", "t_theta", "p_theta"),
+                coef_t_cell(row, "b_B", "t_B", "p_B"),
+                coef_t_cell(row, "b_X", "t_X", "p_X"),
+                "Yes" if row.get("z_controls") in {"1", "1.0"} else "No",
+                row.get("N_model", ""),
+                fmt_float(row.get("r2")),
+            ]
+        )
+    return md_table(
+        [
+            "Model",
+            "Control set",
+            "$$G_{it}$$",
+            "$$G_{it}\\times\\widehat{\\theta}^{F}_{it}$$",
+            "$$\\widehat{\\theta}^{F}_{it}$$",
+            "$$B_{it}$$",
+            "$$X_{it}$$",
+            "$$\\mathbf{Z}_{it}$$",
+            "N",
+            "Adj. $$R^2$$",
+        ],
+        rows,
+    )
+
+
+def kink_control_variant_table(items):
+    rows = []
+    for label, suffix in items:
+        path = RESULT / f"table7_deltaB_kink_selected_cutoff{suffix}.csv"
+        row = kink_selected_row(path)
+        if not row:
+            rows.append([label, "", "", "", "", "", "", "", ""])
+            continue
+        rows.append(
+            [
+                label,
+                fmt_float(row.get("cutoff")),
+                row.get("sign_ok", ""),
+                f"{fmt_float(row.get('b_low'))}{stars(row.get('p_low'))}",
+                fmt_float(row.get("p_low_positive")),
+                f"{fmt_float(row.get('b_high'))}{stars(row.get('p_high'))}",
+                fmt_float(row.get("p_high_negative")),
+                row.get("N_model", ""),
+                fmt_float(row.get("r2")),
+            ]
+        )
+    return md_table(
+        [
+            "Control set",
+            "RSS cutoff",
+            "Sign OK",
+            "$$a$$",
+            "$$p(a>0)$$",
+            "$$b$$",
+            "$$p(b<0)$$",
+            "N",
+            "Adj. $$R^2$$",
+        ],
+        rows,
+    )
+
+
 def file_rows(path):
     if path.suffix.lower() != ".csv":
         return ""
@@ -493,6 +618,20 @@ def build_report():
             ("Horizon t+3", "_notheta_h3"),
         ]
     )
+    kink_without_theta_control_variants = kink_control_variant_table(
+        [
+            ("Z+B+X", "_notheta_zbx"),
+            ("B+X", "_notheta_bx"),
+            ("None", "_notheta_none"),
+        ]
+    )
+    kink_with_theta_control_variants = kink_control_variant_table(
+        [
+            ("Z+B+X", "_withtheta_zbx"),
+            ("B+X", "_withtheta_bx"),
+            ("None", "_withtheta_none"),
+        ]
+    )
 
     lines = [
         f"# Best2 Standalone Report: `{COMBO}`",
@@ -503,13 +642,17 @@ def build_report():
         "- Result directory: `best2/result`.",
         "- Report generator: `best2/generate_best2_report.py`.",
         "- Figure 1 generator: `best2/plot_figure1_theta_distribution.py`.",
+        "- Figure 2 generator: `best2/plot_figure2_spread_relief.py`.",
+        "- Figure 3 generator: `best2/plot_figure3_kink_curve.py`.",
         "- This report: `best2/best2_readiness_delta_vulnerability_delta_report.md`.",
         "",
         "Run from the project root:",
         "",
         "```powershell",
-        "& 'C:\\Environment_tools\\Stata18\\StataMP-64.exe' /e do 'best2\\paperB_best2_readiness_delta_vulnerability_delta_1995_2023_tables.do' 'C:\\Users\\chenyu\\Desktop\\emoirical0530'",
+        "& 'C:\\Environment_tools\\Stata18\\StataMP-64.exe' /e do 'best2\\paperB_best2_readiness_delta_vulnerability_delta_1995_2023_tables.do' 'C:\\Users\\chenyu\\Desktop\\0606'",
         "python best2\\plot_figure1_theta_distribution.py",
+        "python best2\\plot_figure2_spread_relief.py",
+        "python best2\\plot_figure3_kink_curve.py",
         "python best2\\generate_best2_report.py",
         "```",
         "",
@@ -585,6 +728,12 @@ def build_report():
         "",
         "## 4. Main Tables",
         "",
+        "### Table 1. Post-Preprocessing Descriptive Statistics",
+        "",
+        "Statistics use the post-preprocessing non-U.S. 1995--2023 panel. Each row is computed on nonmissing observations for that variable after the 0.01 scaling described in Section 2.",
+        "",
+        table1_descriptive_stats(RESULT / "table1_preprocessed_descriptive_stats.csv"),
+        "",
         "### Table 2. Baseline Fixed-Effects Estimates",
         "",
         md_table(["Variable", "Coefficient", "t-stat."], table2_rows),
@@ -602,7 +751,7 @@ def build_report():
             table3_rows,
         ),
         "",
-        "### Table 6. Theta Descriptive Statistics",
+        "### Table 4. Theta Descriptive Statistics",
         "",
         csv_to_md(RESULT / "table6_theta_descriptive_stats.csv"),
         "",
@@ -612,51 +761,85 @@ def build_report():
         "",
         "Notes: The left panel plots the country-year distribution of $$\\widehat{\\theta}^{F}_{it}$$; the right panel ranks countries by sample-average $$\\widehat{\\theta}^{F}_{it}$$. The dashed vertical line marks the preferred cutoff from the kinked marginal-effect model without direct theta controls.",
         "",
-        "### Table 6.1. Country Screens Around the Preferred Cutoff",
+        "Construction details: Figure 1 is generated by `best2/plot_figure1_theta_distribution.py` from `theta_full_empirical_panel.csv`. The script keeps observations with `theta_sample_full == 1` and nonmissing `theta_hat_full`, which is the empirical theta implied by the full-interaction spread model. The left panel uses the retained country-year observations to draw a histogram and a kernel-density overlay for $$\\widehat{\\theta}^{F}_{it}$$. The right panel collapses the same sample to country-level averages, orders countries from lowest to highest average theta, and plots the resulting ranking. The vertical dashed cutoff is read from `table7_deltaB_kink_selected_cutoff_notheta.csv`, so the figure uses the preferred cutoff from the main without-theta-controls kink specification rather than a visually chosen threshold.",
+        "",
+        "### Figure 2. Marginal Spread Relief from Table 3 Full Interaction",
+        "",
+        "![Figure 2. Marginal spread relief from readiness performance](result/figure2.png)",
+        "",
+        "Notes: The figure plots the negative marginal effect of GDP-adjusted readiness performance on sovereign spreads, based on the Table 3 full-interaction specification. In Panel A, vulnerability_delta is fixed at its median. In Panel B, Debt/GDP is fixed at its median. Higher vulnerability_delta indicates lower vulnerability relative to GDP-predicted vulnerability; hence a downward slope in Panel B means stronger spread relief among more vulnerable countries.",
+        "",
+        "Construction details: Figure 2 is generated in two steps. First, the Stata script re-estimates the Table 3 full-interaction spread model on the same sample used in Table 3: the United States is excluded, the 1995--2023 panel is used, all variables are scaled as in the report, the control vector $$\\mathbf{Z}_{it}$$ is included, country and year fixed effects are included, and robust standard errors are used. From this regression, the script exports $$\\widehat{\\beta}_G$$, $$\\widehat{\\beta}_{GB}$$, $$\\widehat{\\beta}_{GX}$$ and their robust variance-covariance matrix. Panel A evaluates $$-\\partial \\widehat{s}_{it}/\\partial G_{it}=-(\\widehat{\\beta}_G+\\widehat{\\beta}_{GB}B+\\widehat{\\beta}_{GX}X)$$ at the p10, p25, p50, p75, and p90 debt-ratio values, holding vulnerability performance at its sample median. Panel B evaluates the same expression at the p10, p25, p50, p75, and p90 vulnerability-performance values, holding debt/GDP at its sample median. For each plotted point, the standard error is computed by the delta method using the vector $$(1,B_q,X_{median})$$ in Panel A or $$(1,B_{median},X_q)$$ in Panel B. The plotted intervals are point estimates plus or minus 1.96 standard errors, and the two panels use a shared y-axis scale for direct comparison.",
+        "",
+        "### Table 5. Country Screens Around the Preferred Cutoff",
         "",
         country_theta_screen_tables(),
         "",
-        "### Table 6.2. Full-Theta Debt-Level Dynamics Regression",
-        "",
-        csv_to_md(RESULT / "table6_2_debt_level_dynamics_regression.csv"),
-        "",
-        "### Table 7.0. Baseline Debt-Change Regression",
-        "",
-        csv_to_md(RESULT / "table7_0_baseline_debt_change_regression.csv"),
-        "",
-        "### Table 7. Continuous Full-Theta Debt Regression",
-        "",
-        csv_to_md(RESULT / "table7_continuous_theta_debt_regression.csv"),
-        "",
-        "### Combined Table 6.2/6.3/7 Debt-Change Regressions",
+        "### Table 6. Debt-Change Regressions",
         "",
         csv_to_md(RESULT / "table6_2_6_3_7_debt_change_regressions.csv"),
         "",
-        "### Theta-Grouped Heterogeneity Regressions",
+        "### Table 7. Theta-Grouped Heterogeneity Regressions",
         "",
         compact_group_table(RESULT / "table7_theta_group_heterogeneity.csv"),
         "",
-        "### Debt-Ratio Grouped Heterogeneity Regressions",
+        "### Table 8. Debt-Ratio Grouped Heterogeneity Regressions",
         "",
         compact_group_table(RESULT / "table7_B_group_heterogeneity.csv"),
         "",
-        "### Marginal-Relief Grouped Heterogeneity Regressions",
+        "### Table 9. Marginal-Relief Grouped Heterogeneity Regressions",
         "",
         compact_group_table(RESULT / "table7_mG_group_heterogeneity.csv"),
         "",
-        "### Single-Crossing Kink Marginal-Effect Model",
+        "### Table 10. Single-Crossing Kink Marginal-Effect Model",
         "",
         "This is not a standard panel threshold model. The kink model directly estimates whether the marginal debt effect of readiness crosses zero at an empirical cutoff.",
         "",
-        "$$\\Delta B_{i,t+1}=\\alpha_i+\\tau_t+aG_{it}(c-\\widehat{\\theta}^{F}_{it})_++bG_{it}(\\widehat{\\theta}^{F}_{it}-c)_++\\rho_1\\widehat{\\theta}^{F}_{it}+\\rho_2(\\widehat{\\theta}^{F}_{it}-c)_++\\boldsymbol{\\Gamma}'\\mathbf{Z}_{it}+\\varepsilon_{it}.$$",
+        "$$\\Delta B_{i,t+1}=\\alpha_i+\\tau_t+aG_{it}(c-\\widehat{\\theta}^{F}_{it})_++bG_{it}(\\widehat{\\theta}^{F}_{it}-c)_++\\boldsymbol{\\Gamma}'\\mathbf{Z}_{it}+\\varepsilon_{it}.$$",
         "",
         "$$m(\\theta;c)=a(c-\\theta)_+ + b(\\theta-c)_+.$$",
         "",
         "The theory-implied sign pattern is $$a>0$$ and $$b<0$$: adaptation raises next-period debt below the cutoff but reduces next-period debt above the cutoff.",
         "",
-        "#### With Theta Controls",
+        "This version keeps the two kinked readiness terms but omits $$\\widehat{\\theta}^{F}_{it}$$ and $$(\\widehat{\\theta}^{F}_{it}-c)_+$$ as direct controls.",
         "",
-        "This version includes $$\\widehat{\\theta}^{F}_{it}$$ and $$(\\widehat{\\theta}^{F}_{it}-c)_+$$ as direct controls.",
+        csv_to_md_if_exists(RESULT / "table7_deltaB_kink_selected_cutoff_notheta.csv"),
+        "",
+        csv_to_md_if_exists(RESULT / "table7_deltaB_kink_marginal_effects_notheta.csv"),
+        "",
+        "##### Figure 3. Continuous Kink Marginal Effect without Theta Controls",
+        "",
+        "![Figure 3. Continuous kink marginal effect without theta controls](result/figure3_kink_marginal_effect_notheta_continuous.png)",
+        "",
+        "Notes: The figure plots m(theta;c)=a(c-theta)_+ + b(theta-c)_+ from the single-crossing kink model without theta controls. Positive values imply that readiness improvements are associated with higher next-period debt changes; negative values imply lower next-period debt changes. The vertical dashed line marks the empirical cutoff c.",
+        "",
+        "Construction details: Figure 3 is generated from the main without-theta-controls single-crossing kink model. The Stata script reads the preferred cutoff from `table7_deltaB_kink_selected_cutoff_notheta.csv`, constructs $$\\Delta B_{i,t+1}=B_{i,t+1}-B_{it}$$, and estimates the kink regression with country fixed effects, year fixed effects, the same control vector $$\\mathbf{Z}_{it}$$, and robust standard errors. The model includes only the two kinked readiness terms, $$G_{it}(c-\\widehat{\\theta}^{F}_{it})_+$$ and $$G_{it}(\\widehat{\\theta}^{F}_{it}-c)_+$$, and deliberately omits $$\\widehat{\\theta}^{F}_{it}$$ and $$(\\widehat{\\theta}^{F}_{it}-c)_+$$ as direct controls. It then takes the p10 and p90 of $$\\widehat{\\theta}^{F}_{it}$$ in the estimation sample and constructs 100 evenly spaced theta values between them. At each grid point, the plotted curve is $$m(\\theta;c)=\\widehat{a}(c-\\theta)_+ + \\widehat{b}(\\theta-c)_+$$. The confidence band is computed by the delta method using the vector $$((c-\\theta)_+, (\\theta-c)_+)$$ and the robust 2-by-2 variance-covariance matrix of $$(\\widehat{a},\\widehat{b})$$. The horizontal dashed line marks zero marginal effect; the vertical dashed line marks the empirical cutoff. The left label identifies the region where the model predicts debt-worsening marginal effects, while the right label identifies the region where the model predicts debt-improving marginal effects.",
+        "",
+        kink_without_theta_interpretation,
+        "",
+        "Robustness checks for the without-theta-controls version:",
+        "",
+        kink_without_theta_robustness,
+        "",
+        "Full cutoff grids are exported as machine-readable CSV files and are not expanded inline: `table7_deltaB_kink_cutoff_grid*.csv`.",
+        "",
+        "## 5. Appendix",
+        "",
+        "### Table A1. Debt-Change Model Control-Set Variants",
+        "",
+        "The appendix re-estimates the baseline, continuous full-theta, and full-theta dynamics debt-change models under three alternative control sets: $$\\mathbf{Z}_{it}+B_{it}+X_{it}$$, $$B_{it}+X_{it}$$, and no controls. All variants keep country and year fixed effects and robust standard errors.",
+        "",
+        appendix_debt_control_variants_table(RESULT / "appendix_debt_change_control_variants.csv"),
+        "",
+        "### Table A2. Single-Crossing Kink without Theta Controls: Control-Set Variants",
+        "",
+        "These appendix variants keep the main no-theta-controls kink structure but vary the additional controls. The preferred main-text cutoff remains the Z-controls without-theta-controls specification.",
+        "",
+        kink_without_theta_control_variants,
+        "",
+        "### Table A3. Single-Crossing Kink with Theta Controls",
+        "",
+        "This appendix version includes $$\\widehat{\\theta}^{F}_{it}$$ and $$(\\widehat{\\theta}^{F}_{it}-c)_+$$ as direct controls.",
         "",
         csv_to_md_if_exists(RESULT / "table7_deltaB_kink_selected_cutoff.csv"),
         "",
@@ -668,29 +851,19 @@ def build_report():
         "",
         kink_with_theta_robustness,
         "",
-        "#### Without Theta Controls",
+        "### Table A4. Single-Crossing Kink with Theta Controls: Control-Set Variants",
         "",
-        "This version keeps the two kinked readiness terms but omits $$\\widehat{\\theta}^{F}_{it}$$ and $$(\\widehat{\\theta}^{F}_{it}-c)_+$$ as direct controls.",
+        "These appendix variants keep the direct theta controls and vary the additional controls across $$\\mathbf{Z}_{it}+B_{it}+X_{it}$$, $$B_{it}+X_{it}$$, and no controls.",
         "",
-        csv_to_md_if_exists(RESULT / "table7_deltaB_kink_selected_cutoff_notheta.csv"),
+        kink_with_theta_control_variants,
         "",
-        csv_to_md_if_exists(RESULT / "table7_deltaB_kink_marginal_effects_notheta.csv"),
-        "",
-        kink_without_theta_interpretation,
-        "",
-        "Robustness checks for the without-theta-controls version:",
-        "",
-        kink_without_theta_robustness,
-        "",
-        "Full cutoff grids are exported as machine-readable CSV files and are not expanded inline: `table7_deltaB_kink_cutoff_grid*.csv`.",
-        "",
-        "## 5. Result File Inventory",
+        "## 6. Result File Inventory",
         "",
         "Large machine-readable support files are saved in `best2/result` and are not expanded inline: `theta_full_empirical_panel.csv` and `table7_deltaB_kink_cutoff_grid*.csv`.",
         "",
         md_table(["File", "Bytes", "CSV rows"], inventory),
         "",
-        "## 6. Verification",
+        "## 7. Verification",
         "",
         f"- Stata runtime error count from `r(...)`: `{stata_errors}`.",
         f"- Stata completion marker found: `{done}`.",

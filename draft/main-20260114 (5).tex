@@ -1,0 +1,1006 @@
+\documentclass[12pt]{article}  
+
+\usepackage{amssymb,amsmath,amsfonts,eurosym,geometry,ulem,graphicx,caption,color,setspace,sectsty,comment,footmisc,caption,pdflscape,subfigure,array, enumitem, longtable, float, soul, color, titling, etoolbox, tablefootnote}
+
+%,natbib
+
+\usepackage{natbib}
+
+\normalem
+
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,patterns}
+\usepgfplotslibrary{groupplots}
+
+
+
+
+\onehalfspacing
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{asm}{Assumption}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{subhyp}{Hypothesis}[hyp]
+\renewcommand{\thesubhyp}{\thehyp\alph{subhyp}}
+%\usepackage{sectsty}
+%\subsectionfont{\normalfont\itshape}
+%\subsubsectionfont{\normalfont\itshape}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12}{17}\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{17}\itshape}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12}{17}\itshape}{\thesubsubsection.}{0.5em}{}
+
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{lscape}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{graphicx}
+\usepackage{autobreak}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\captionsetup{font=small,labelfont=bf}
+\AtBeginEnvironment{table}{\singlespacing}
+\AtBeginEnvironment{figure}{\singlespacing}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\def\E{\mathbb{E}}
+\def\Cov{\mbox{Cov}}
+\def\Var{\mbox{Var}}
+\def\Pr{\mbox{Pr}}
+
+%\addbibresource{ref.bib}  %ref.bib是之前新建的.bib文件
+
+
+\begin{document}
+\graphicspath{{figures/}}
+\doublespacing
+\title{Optimal Adaptation under Fiscal Capacity Constraints: Doom and Virtuous Loops in  Debt Markets}
+
+\author{Yun Shi}
+
+\date{}
+
+	
+\maketitle
+\begin{abstract}
+ Physical climate risks such as droughts, floods, and extreme heat are increasingly recognized as systematic risk factors for the real economy and financial markets, yet we know comparatively little about whether and how public policy can reshape their pricing.
+\end{abstract}
+
+\textbf{Keywords:} Physical climate risks, asset pricing, public policy
+
+
+\section{Introduction}
+
+Many countries face a policy dilemma: physical climate risk raises expected losses and risk premia in sovereign debt
+markets, yet the very increase in borrowing costs can compress fiscal space and limit investment in adaptation.
+This feedback has been described as a ``climate--sovereign doom loop.'' While conceptually compelling, the conditions
+under which the feedback becomes self-reinforcing---and when it can instead turn into a virtuous cycle---remain
+insufficiently characterized and empirically operationalized.
+
+This paper develops a tractable macro-finance framework in which the government chooses adaptation investment $G_t$
+to manage physical climate risk and financing conditions. Adaptation reduces the persistence and volatility of climate
+risk and lowers both sovereign and corporate default intensities, compressing public and private spreads. We then
+introduce an explicit fiscal-capacity (market-access) constraint that endogenizes the shadow price of fiscal tightness,
+$\mu_t$. This constraint modifies the optimality condition for $G_t$ through a fiscal-space wedge, creating the
+possibility of non-linear feedback.
+
+Our key theoretical contribution is a set of transparent threshold inequalities that classify the economy into
+doom-loop versus virtuous-cycle regions. The regime boundary is summarized by
+$\theta_t \equiv B_t\!\left(-\partial s_t^g/\partial G_t\right)$: when $\theta_t<1$, a binding constraint raises the
+effective marginal cost of adaptation, so fiscal tightening reduces $G_t^*$ and reinforces high spreads (doom loop);
+when $\theta_t>1$, adaptation improves debt dynamics ($\partial B_{t+1}/\partial G_t<0$), so fiscal tightness
+reinforces adaptation incentives (virtuous cycle). A complementary index
+$\rho_t \equiv \Phi_{s^g}(-\partial s_t^g/\partial G_t)+\Psi_{\bar s^c}(-\partial \bar s_t^c/\partial G_t)$ captures
+when adaptation is self-financing on impact. We summarize the regimes in a two-panel map that clarifies policy levers
+to avoid the doom loop and highlights conditions under which tipping/multiplicity can arise.
+
+Empirically, we bring these predictions to the data using a global panel of sovereign spreads (and CDS where available),
+public debt, and measures of adaptation/resilience. We estimate how spreads respond to adaptation capacity and interact
+this response with debt levels and indicators of fiscal tightness to construct empirical counterparts of $\theta_t$ and
+$\rho_t$. Consistent with the model, we find stronger non-linearities when fiscal capacity is tight, and we provide
+evidence that the corporate channel strengthens spread compression and expands the virtuous region.
+
+Our results contribute to the sovereign-risk and climate-finance literatures by (i) endogenizing adaptation as an
+optimal policy choice under fiscal constraints, (ii) offering a regime-classification framework with empirically
+implementable thresholds, and (iii) highlighting a public--private complementarity channel through which adaptation can
+generate large fiscal returns.
+
+
+%========================================================
+% Paper B: Theory Sections 2--5 (draft text)
+%========================================================
+
+\section{Model Setup}
+\label{sec:model_setup_B}
+
+\subsection{Economic Environment, Climate Risk, and Adaptation}
+ 
+Time is discrete, $t = 0,1,2,\ldots$. Uncertainty is generated by a climate
+risk factor $X_t$ and other aggregate shocks. Government adaptation
+investment is denoted by $G_t \ge 0$, which can be interpreted as the flow
+of public spending on climate adaptation (e.g., large-scale water projects,
+flood defenses). For now, we treat $G_t$ as exogenous and focus on its
+asset-pricing implications.
+
+\paragraph{Climate risk dynamics.}
+We model the climate factor $X_t$ as a (possibly persistent) shock that
+captures the intensity of physical climate risk (e.g., drought risk) at
+time $t$. Its dynamics are given by
+\begin{equation}
+  X_{t+1} = (1 - \phi(G_t)) X_t + \sigma(G_t)\,\varepsilon_{t+1},
+  \label{eq:climate_dynamics}
+\end{equation}
+where $\varepsilon_{t+1}$ is an i.i.d.\ innovation with mean zero and unit
+variance, $\phi(G_t) \in [0,1)$ measures the mean-reversion of the climate
+shock, and $\sigma(G_t) > 0$ is the conditional volatility of $X_{t+1}$.
+
+
+
+We assume:
+\begin{equation}
+  \phi'(G) > 0, 
+  \qquad
+  \sigma'(G) < 0.
+  \label{eq:adapt_effectiveness}
+\end{equation}
+That is, a higher level of adaptation investment $G$ increases the
+mean-reversion of climate shocks and reduces their conditional variance.
+Under (\ref{eq:climate_dynamics})--(\ref{eq:adapt_effectiveness}), $G$
+reduces both the persistence and volatility of climate risk.
+
+\paragraph{Aggregate output and tax base.}
+Aggregate output next period is given by
+\begin{equation}
+  Y_{t+1} = \bar{Y} - d_X X_{t+1} + u_{t+1},
+  \label{eq:output}
+\end{equation}
+where $d_X > 0$ captures the adverse impact of climate risk on output and
+$u_{t+1}$ is an i.i.d.\ disturbance. The government collects proportional
+taxes
+\begin{equation*}
+  T_{t+1} = \tau Y_{t+1}, \qquad \tau \in (0,1).
+  \label{eq:tax}
+\end{equation*}
+
+\paragraph{Stochastic discount factor.}
+Asset prices are determined by a stochastic discount factor (SDF) $M_{t+1}$.
+We do not commit to a particular preference specification but assume that
+climate risk is \emph{bad} in the sense that
+\begin{equation}
+  \Cov_t(M_{t+1}, X_{t+1}) > 0.
+  \label{eq:SDF_climate_cov}
+\end{equation}
+Intuitively, high realizations of $X_{t+1}$ (more severe climate risk) are
+associated with high marginal utility and thus high $M_{t+1}$.
+
+\subsection{Government Sector and Sovereign Debt Pricing}
+
+The government issues one-period defaultable bonds. Let $B_t$ denote the
+stock of outstanding government debt at time $t$, and let $r^f_t$ be the
+risk-free short rate. The government budget constraint is
+\begin{equation}
+  B_{t+1} = (1 + r^g_t) B_t + G_t + I_t - T_t,
+  \label{eq:gov_budget}
+\end{equation}
+where $r^g_t$ is the required return on sovereign bonds, $G_t$ is
+adaptation spending, and $I_t$ collects other government expenditures.
+
+\paragraph{Default intensity.}
+We model sovereign default in reduced form. Let $D^g_{t+1} \in \{0,1\}$ be
+the indicator that the government defaults between $t$ and $t+1$. The
+(physical) default intensity is
+\begin{equation}
+  \lambda^g_t = \Lambda^g(X_t, B_t, G_t),
+  \label{eq:lambda_g_def}
+\end{equation}
+where $\Lambda^g(\cdot)$ is increasing in climate risk and debt, but
+decreasing in adaptation:
+\begin{equation}
+  \frac{\partial \Lambda^g}{\partial X} > 0, \quad
+  \frac{\partial \Lambda^g}{\partial B} > 0, \quad
+  \frac{\partial \Lambda^g}{\partial G} < 0.
+  \label{eq:lambda_g_mono}
+\end{equation}
+These assumptions capture the idea that severe climate risk and high debt
+raise sovereign default risk, while greater adaptation investment improves
+macroeconomic resilience and reduces default intensity.
+
+\paragraph{Sovereign bond pricing and spreads.}
+Consider a one-period sovereign bond with face value one and price $P^g_t$.
+Its payoff is $(1-D^g_{t+1})$ in units of the numeraire. The no-arbitrage
+pricing equation is
+\begin{equation}
+  P^g_t = \E_t\Big[M_{t+1} (1 - D^g_{t+1})\Big].
+  \label{eq:gov_bond_price}
+\end{equation}
+Define the gross required return
+\begin{equation*}
+  1 + r^g_t := \frac{1}{P^g_t}.
+\end{equation*}
+Let $P^f_t = \E_t[M_{t+1}]$ denote the price of a default-free one-period
+bond; its return satisfies $1 + r^f_t = 1/P^f_t$. The \emph{sovereign
+spread} is defined as
+\begin{equation}
+  s^g_t := r^g_t - r^f_t.
+  \label{eq:sg_def}
+\end{equation}
+
+Under a standard linearization of (\ref{eq:gov_bond_price}), the sovereign
+spread can be decomposed into an expected-loss component and a risk-premium
+component linked to climate risk.\footnote{The exact functional form is not
+central for our comparative statics. A formal derivation is provided in
+the Appendix XX.}
+
+\begin{proposition}[Decomposition of sovereign spreads]
+\label{prop:sg_decomp}
+Under mild regularity conditions and a local linearization around the mean,
+the sovereign spread can be written as
+\begin{equation}
+  s^g_t \approx \underbrace{\lambda^{g,\mathbb{P}}_t}_{\text{expected loss}}
+           + \underbrace{\beta^g_X(G_t)\, \lambda_X(G_t)}_{\text{climate risk premium}}
+           + \text{(other risk premia)},
+  \label{eq:sg_decomp}
+\end{equation}
+where $\lambda^{g,\mathbb{P}}_t$ is the physical default intensity,
+$\beta^g_X(G_t)$ is the sovereign bond's exposure (beta) to the climate
+factor $X_{t+1}$, and $\lambda_X(G_t)$ is the market price of climate
+risk. Both $\beta^g_X(G)$ and $\lambda_X(G)$ are functions of the level of
+adaptation $G$ through the climate dynamics
+(\ref{eq:climate_dynamics})--(\ref{eq:adapt_effectiveness}) and the SDF
+covariance (\ref{eq:SDF_climate_cov}).
+\end{proposition}
+
+We next characterize how an increase in adaptation $G_t$ affects the
+sovereign spread.
+
+\begin{proposition}[Climate adaptation and sovereign financing costs]
+\label{prop:sg_G}
+Suppose that:
+\begin{enumerate}
+  \item $\Lambda^g$ satisfies the monotonicity conditions
+        (\ref{eq:lambda_g_mono});
+  \item $G$ affects the climate dynamics through
+        (\ref{eq:climate_dynamics})--(\ref{eq:adapt_effectiveness});
+  \item the SDF satisfies (\ref{eq:SDF_climate_cov}).
+\end{enumerate}
+Then, holding $(X_t,B_t)$ fixed, the sovereign spread $s^g_t$ is decreasing
+in $G_t$:
+\begin{equation}
+  \frac{\partial s^g_t}{\partial G_t} < 0.
+  \label{eq:dsg_dG}
+\end{equation}
+The total effect can be decomposed into:
+\[
+  \frac{\partial s^g_t}{\partial G_t}
+  =
+  \underbrace{\frac{\partial \lambda^{g,\mathbb{P}}_t}{\partial G_t}}_{<0,\;\text{expected loss effect}}
+  +
+  \underbrace{\frac{\partial \beta^g_X(G_t)}{\partial G_t}\, \lambda_X(G_t)
+  + \beta^g_X(G_t)\, \frac{\partial \lambda_X(G_t)}{\partial G_t}}_{\le 0,\;\text{risk premium effect}}.
+\]
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The expected-loss effect follows directly from
+(\ref{eq:lambda_g_def})--(\ref{eq:lambda_g_mono}). The risk-premium effect
+arises because $G$ reduces both the variance of $X_{t+1}$ and its
+persistence, thereby lowering the sovereign bond's exposure $\beta^g_X(G)$,
+and because the market price of climate risk $\lambda_X(G)$ is decreasing
+in the volatility of $X_{t+1}$ given (\ref{eq:SDF_climate_cov}). A formal
+derivation is provided in Appendix~XX.
+\end{proof}
+
+\begin{corollary}[Cross-sectional heterogeneity in sovereign spread relief]
+\label{cor:sg_heterogeneity}
+The impact of adaptation investment $G_t$ on sovereign spreads is stronger
+when:
+\begin{enumerate}
+  \item the economy is more climate-exposed (higher $d_X$ in
+        (\ref{eq:output})), and/or
+  \item the government debt level $B_t$ is higher (so that a given
+        reduction in default intensity generates a larger change in
+        expected loss).
+\end{enumerate}
+\end{corollary}
+
+\subsection{Corporate Sector and Credit Spreads}
+
+We now introduce a continuum of firms indexed by $i$. Each firm issues
+defaultable corporate bonds and is exposed to both climate risk and
+sovereign risk.
+
+\paragraph{Corporate cash flows and climate exposure.}
+Firm $i$'s cash flow next period is
+\begin{equation}
+  CF_{i,t+1} = \bar{CF}_i - \theta_i X_{t+1} - \eta_i \lambda^g_t + \epsilon_{i,t+1},
+  \label{eq:CF}
+\end{equation}
+where $\theta_i \ge 0$ measures the firm's technological exposure to
+climate risk (e.g., water-intensive production), $\eta_i \ge 0$ captures
+its exposure to sovereign risk (e.g., dependence on fiscal transfers or
+regulated tariffs), and $\epsilon_{i,t+1}$ is an idiosyncratic shock.
+
+\paragraph{Corporate default intensity.}
+Firm $i$'s (physical) default intensity is modeled as
+\begin{equation}
+  \lambda^c_{i,t} = \Lambda^c(X_t, G_t; Z_i),
+  \label{eq:lambda_c_def}
+\end{equation}
+where $Z_i$ collects firm-level characteristics. We assume
+\begin{equation}
+  \frac{\partial \Lambda^c}{\partial X} > 0, 
+  \qquad
+  \frac{\partial \Lambda^c}{\partial G} < 0,
+  \label{eq:lambda_c_mono}
+\end{equation}
+so that worse climate conditions raise default risk, while adaptation
+investment attenuates it.
+
+\paragraph{Corporate bond pricing and spreads.}
+Consider a one-period zero-coupon bond issued by firm $i$ with price
+$P^c_{i,t}$ and payoff $(1-D^c_{i,t+1})$. The price satisfies
+\begin{equation}
+  P^c_{i,t} = \E_t\Big[M_{t+1} (1 - D^c_{i,t+1})\Big],
+  \label{eq:corp_bond_price}
+\end{equation}
+where $D^c_{i,t+1}$ is the default indicator. The corporate bond return is
+$1 + r^c_{i,t} := 1/P^c_{i,t}$, and the corporate credit spread is
+\begin{equation}
+  s^c_{i,t} := r^c_{i,t} - r^f_t.
+  \label{eq:sc_def}
+\end{equation}
+
+Parallel to Proposition~\ref{prop:sg_decomp} and Proposition~\ref{prop:sg_G}, we obtain:
+
+\begin{proposition}[Decomposition of corporate credit spreads]
+\label{prop:sc_decomp}
+Under a local linearization, the corporate credit spread can be written as
+\begin{equation}
+  s^c_{i,t} \approx \underbrace{\lambda^{c,\mathbb{P}}_{i,t}}_{\text{expected loss}}
+                 + \underbrace{\beta^c_{i,X}(G_t)\, \lambda_X(G_t)}_{\text{climate risk premium}}
+                 + \text{(other risk premia)},
+  \label{eq:sc_decomp}
+\end{equation}
+where $\lambda^{c,\mathbb{P}}_{i,t}$ is the firm's physical default
+intensity, $\beta^c_{i,X}(G_t)$ is the firm's bond exposure to climate
+risk, and $\lambda_X(G_t)$ is the same market price of climate risk as in
+(\ref{eq:sg_decomp}).
+\end{proposition}
+
+\begin{proposition}[Climate adaptation and corporate financing costs]
+\label{prop:sc_G}
+If (\ref{eq:lambda_c_mono}) holds and $G$ affects the climate dynamics as
+in (\ref{eq:climate_dynamics})--(\ref{eq:adapt_effectiveness}), then,
+holding $(X_t,Z_i)$ fixed, the corporate credit spread $s^c_{i,t}$ is
+decreasing in adaptation investment:
+\begin{equation}
+  \frac{\partial s^c_{i,t}}{\partial G_t} < 0.
+  \label{eq:dsc_dG}
+\end{equation}
+
+\end{proposition}
+
+The reduction in spreads is stronger for firms with larger
+climate-exposure coefficients $\theta_i$ and sovereign-risk loadings
+$\eta_i$ in (\ref{eq:CF}), as summarized in Corollary~\ref{cor:sc_heterogeneity}.
+
+\begin{corollary}[Cross-sectional predictions for corporate spreads]
+\label{cor:sc_heterogeneity}
+For a given change in adaptation investment $G_t$, the decline in credit
+spreads $s^c_{i,t}$ is predicted to be:
+\begin{enumerate}
+  \item larger for firms with higher $\theta_i$ (more climate-sensitive
+        cash flows, e.g., water-intensive industries); and
+  \item larger for firms with higher $\eta_i$ (stronger dependence on
+        sovereign risk, e.g., state-owned enterprises or regulated
+        utilities).
+\end{enumerate}
+
+\end{corollary}
+These cross-sectional predictions provide testable implications for the
+empirical analysis.
+
+\subsection{Joint Government--Corporate Financing Conditions}
+
+Finally, define the average sovereign spread
+$\bar{s}^g_t := \E[s^g_t]$ and an aggregate corporate spread
+$\bar{s}^c_t := \E_i[s^c_{i,t}]$. Combining
+Propositions~\ref{prop:sg_G} and~\ref{prop:sc_G}, we obtain:
+
+\begin{proposition}[Adaptation investment and aggregate financing costs]
+\label{prop:aggregate_costs}
+Under the above assumptions, an increase in adaptation investment $G_t$
+reduces both sovereign and corporate spreads at the aggregate level:
+\begin{equation}
+  \frac{\partial \bar{s}^g_t}{\partial G_t} < 0,
+  \qquad
+  \frac{\partial \bar{s}^c_t}{\partial G_t} < 0.
+\end{equation}
+Moreover, the joint reduction in public and private financing costs can
+offset part of the contemporaneous fiscal cost of adaptation $G_t$ in the
+government budget constraint (\ref{eq:gov_budget}).
+\end{proposition}
+
+
+\section{Optimal Adaptation Policy}
+\label{sec:optimal_policy_B}
+
+\subsection{Government objective and resource constraint}
+\label{subsec:gov_objective_B}
+
+In the previous subsections, government adaptation investment $G_t$ is taken
+as exogenous. We now endogenize $G_t$ by specifying a multi-objective
+government problem in which the policy maker trades off three goals:
+(i) sustaining aggregate economic activity, (ii) mitigating climate
+damages, and (iii) improving sovereign and corporate financing conditions.
+
+
+Let $C_t$ denote aggregate (private) consumption and let $D(X_t)$ capture
+the flow disutility from climate risk $X_t$, with $D'(X) > 0$ and
+$D''(X) \ge 0$.\footnote{
+Modeling climate damages partly as utility/amenity damages is standard in the climate-economy literature; see, e.g., \citet{Barrage2020}.} We also let high sovereign and corporate spreads generate
+additional welfare costs, as they tighten public and private financing
+constraints. The per-period social welfare is
+\begin{equation}
+  W_t
+  =
+  U(C_t)
+  - \alpha\, D(X_t)
+  - \gamma^g\, s^g_t B_t
+  - \gamma^c\, \bar{s}^c_t K_t,
+  \label{eq:W_def}
+\end{equation}
+where, $U(\cdot)$ is a standard increasing, concave utility function,
+        $U'(C) > 0$, $U''(C) < 0$;
+$\alpha > 0$ measures the weight on reducing climate damages;
+$\gamma^g > 0$ and $\gamma^c > 0$ measure the social costs of high
+        sovereign and corporate financing spreads, respectively;
+$s^g_t$ is the sovereign spread defined in \eqref{eq:sg_def},
+        $B_t$ is government debt;
+$\bar{s}^c_t$ is an aggregate corporate
+        spread defined in \eqref{eq:sc_decomp}; $K_t$ measures the aggregate scale of private borrowing or capital.
+
+
+The multi-objective nature of the problem is made explicit in
+\eqref{eq:W_def}: the government puts (implicit) weights on consumption,
+climate damages, and financing conditions. In practice, this is equivalent
+to a standard single-objective optimization with a weighted composite
+criterion.
+
+
+For concreteness, we assume that aggregate consumption is given by
+\begin{equation}
+  C_t
+  =
+  Y_t
+  - G_t
+  - \Phi(B_t, s^g_t)
+  - \Psi(K_t, \bar{s}^c_t),
+  \label{eq:C_def}
+\end{equation}
+where $Y_t$ is aggregate output defined in \eqref{eq:output}, $G_t$ is
+adaptation spending, and $\Phi(\cdot)$ and $\Psi(\cdot)$ capture
+government and private resources absorbed by debt service and financing
+frictions, with
+\[
+  \frac{\partial \Phi}{\partial s^g} > 0, \qquad
+  \frac{\partial \Psi}{\partial \bar{s}^c} > 0.
+\]
+Thus, higher sovereign and corporate spreads tighten the resource
+constraint by increasing required payments and reducing available
+consumption.
+
+Government debt evolves according to the budget constraint
+\eqref{eq:gov_budget}, repeated here for convenience:
+\begin{equation}
+  B_{t+1} = (1 + r^g_t) B_t + G_t + I_t - T_t,
+  \label{eq:gov_budget_repeat}
+\end{equation}
+with $r^g_t = r^f_t + s^g_t$.
+
+
+
+\subsection{FOC and characterization of $G_t^*$}
+\label{subsec:FOC_optG_B}
+
+The government chooses a sequence $\{G_t\}_{t \ge 0}$ to maximize the
+expected discounted sum of social welfare:
+\begin{equation}
+  \max_{\{G_t\}_{t \ge 0}} 
+  \E_0 \sum_{t=0}^\infty \beta^t W_t,
+  \qquad \beta \in (0,1),
+  \label{eq:gov_problem}
+\end{equation}
+subject to the climate dynamics \eqref{eq:climate_dynamics}, the output
+equation \eqref{eq:output}, the government budget constraint
+\eqref{eq:gov_budget_repeat}, the bond pricing relations
+\eqref{eq:gov_bond_price} and \eqref{eq:corp_bond_price}, and the
+definitions of sovereign and corporate spreads in
+\eqref{eq:sg_def} and \eqref{eq:sc_decomp}.
+
+Let the state vector be $S_t = (X_t, B_t, \Xi_t)$, where $\Xi_t$ collects
+other relevant aggregate states (e.g., $K_t$ and exogenous macro shocks).
+The government's value function satisfies
+\begin{equation}
+  V(S_t)
+  =
+  \max_{G_t \ge 0} 
+  \Big\{
+    W_t(S_t, G_t)
+    + \beta\, \E_t\big[ V(S_{t+1}) \big]
+  \Big\},
+  \label{eq:Bellman}
+\end{equation}
+where $S_{t+1}$ evolves according to the laws of motion implied by the
+constraints and the climate dynamics \eqref{eq:climate_dynamics}.
+
+Consider an interior solution and differentiability. The first-order condition (FOC) for $G_t$ can be written as
+\begin{equation}
+  \frac{\partial W_t}{\partial G_t}
+  +\beta\,\mathbb{E}_t\!\left[
+    V_X(S_{t+1})\frac{\partial X_{t+1}}{\partial G_t}
+    +V_B(S_{t+1})\frac{\partial B_{t+1}}{\partial G_t}
+    +V_{\Xi}(S_{t+1})\frac{\partial \Xi_{t+1}}{\partial G_t}
+  \right] = 0.
+  \label{eq:FOC_general_B}
+\end{equation}
+At time $t$, $(X_t,B_t,K_t,\Xi_t)$ are predetermined; contemporaneous effects of $G_t$ operate through resource allocation
+and through prices (spreads) embedded in $\Phi(\cdot)$ and $\Psi(\cdot)$. Using \eqref{eq:W_def}--\eqref{eq:C_def},
+the marginal effect of $G_t$ on current welfare can be expressed as
+\begin{equation}
+  \frac{\partial W_t}{\partial G_t}
+  =
+  U_C(C_t)\frac{\partial C_t}{\partial G_t}
+  - \gamma^g B_t\frac{\partial s^g_t}{\partial G_t}
+  - \gamma^c K_t\frac{\partial \bar s^c_t}{\partial G_t},
+  \label{eq:dW_dG_B}
+\end{equation}
+where
+\begin{equation}
+  \frac{\partial C_t}{\partial G_t}
+  = -1 + \Phi_{s^g}(B_t,s^g_t)\Big(-\frac{\partial s^g_t}{\partial G_t}\Big)
+      + \Psi_{\bar s^c}(K_t,\bar s^c_t)\Big(-\frac{\partial \bar s^c_t}{\partial G_t}\Big).
+  \label{eq:dC_dG_B}
+\end{equation}
+Equation \eqref{eq:dC_dG_B} makes clear that the direct resource cost of adaptation ($-1$) can be partially offset by
+contemporaneous spread compression that releases public and private resources.
+
+Combining \eqref{eq:FOC_general_B}--\eqref{eq:dC_dG_B}, the optimality condition equates marginal cost and marginal benefits.
+We summarize this characterization as follows.
+
+\begin{proposition}[Characterization of optimal adaptation]
+\label{prop:optimal_G_B}
+Suppose \eqref{eq:adapt_effectiveness} and \eqref{eq:lambda_g_mono} hold and, analogously, adaptation reduces aggregate
+corporate spreads so that $\partial \bar s^c_t/\partial G_t<0$. Then the government's optimal adaptation policy $G_t^*$ satisfies
+\begin{align}
+  U_C(C_t)
+  &=
+  \underbrace{
+    U_C(C_t)\Big[
+      \Phi_{s^g}(B_t,s^g_t)\Big(-\frac{\partial s^g_t}{\partial G_t}\Big)
+      +\Psi_{\bar s^c}(K_t,\bar s^c_t)\Big(-\frac{\partial \bar s^c_t}{\partial G_t}\Big)
+    \Big]
+  }_{\text{current benefit: resource release via spread compression}}
+  \;+\;
+  \underbrace{
+    \gamma^g B_t\Big(-\frac{\partial s^g_t}{\partial G_t}\Big)
+    +\gamma^c K_t\Big(-\frac{\partial \bar s^c_t}{\partial G_t}\Big)
+  }_{\text{current benefit: lower financing costs}}
+  \nonumber\\
+  &\quad+\;
+  \underbrace{
+    \beta\,\mathbb{E}_t\!\left[
+      V_X(S_{t+1})\frac{\partial X_{t+1}}{\partial G_t}
+      +V_B(S_{t+1})\frac{\partial B_{t+1}}{\partial G_t}
+      +V_{\Xi}(S_{t+1})\frac{\partial \Xi_{t+1}}{\partial G_t}
+    \right]
+  }_{\text{intertemporal benefit term}}.
+  \label{eq:FOC_interpretation_B}
+\end{align}
+In particular, optimal adaptation trades off the direct resource cost against (i) contemporaneous fiscal returns from spread
+compression and lower financing costs, and (ii) discounted benefits through next-period states, including future damage mitigation
+via $\partial X_{t+1}/\partial G_t$ and debt-sustainability effects via $\partial B_{t+1}/\partial G_t$.
+\end{proposition}
+
+Proposition~\ref{prop:optimal_G_B} highlights that even before introducing an explicit fiscal-capacity constraint, adaptation can
+be partially self-financing through contemporaneous credit-market improvements. This feature will be central in the regime
+identification below.
+
+\subsection{Fiscal Capacity Constraint and Regime Identification}
+\label{sec:doom_identification_B}
+
+\subsubsection{Fiscal capacity  constraint}
+\label{subsec:fiscal_constraint_B}
+
+To capture limited market access and fiscal space, we introduce an explicit fiscal-capacity constraint on next-period debt:
+\begin{equation}
+  B_{t+1}\le \overline B(\Xi_t),
+  \label{eq:debt_limit_B}
+\end{equation}
+where $\overline B(\Xi_t)$ is an upper bound that depends on sovereign fundamentals $\Xi_t$ (e.g., institutional quality,
+resilience, external buffers). Let $\mu_t\ge 0$ denote the associated multiplier. When the constraint binds ($\mu_t>0$),
+fiscal tightness has a shadow value, and optimal adaptation is distorted relative to the unconstrained benchmark.
+
+\subsubsection{Self-financing and debt-improving indices}
+\label{subsec:sufficient_stats_B}
+
+The constrained problem modifies the optimality condition through a fiscal-space wedge that depends on how adaptation affects
+next-period debt. A key object is the marginal effect of $G_t$ on debt dynamics:
+\begin{equation}
+  \frac{\partial B_{t+1}}{\partial G_t} = 1 + B_t \frac{\partial s^g_t}{\partial G_t}.
+  \label{eq:dBnext_dG_B}
+\end{equation}
+Motivated by \eqref{eq:dC_dG_B} and \eqref{eq:dBnext_dG_B}, we define two indices:
+\begin{equation}
+  \rho_t \equiv \Phi_{s^g}(B_t,s^g_t)\Big(-\frac{\partial s^g_t}{\partial G_t}\Big)
+  +\Psi_{\bar s^c}(K_t,\bar s^c_t)\Big(-\frac{\partial \bar s^c_t}{\partial G_t}\Big),
+  \qquad
+  \theta_t \equiv B_t\Big(-\frac{\partial s^g_t}{\partial G_t}\Big).
+  \label{eq:rho_theta_def_B}
+\end{equation}
+The first index $\rho_t$ captures whether adaptation is self-financing on impact through public and private resource release,
+while the second index $\theta_t$ captures whether spread compression is strong enough to improve debt dynamics.
+
+\begin{corollary}[Self-financing on impact]
+\label{cor:self_financing_B}
+If $\rho_t\ge 1$, then the contemporaneous resource effect satisfies $\partial C_t/\partial G_t\ge 0$ in \eqref{eq:dC_dG_B}:
+adaptation is weakly self-financing on impact through reduced public and private resources absorbed by spreads.
+\end{corollary}
+
+\begin{corollary}[Debt-improving adaptation]
+\label{cor:debt_improving_B}
+If $\theta_t>1$, then $\partial B_{t+1}/\partial G_t<0$ in \eqref{eq:dBnext_dG_B}: increasing adaptation reduces next-period debt
+by lowering sovereign spreads sufficiently strongly.
+\end{corollary}
+
+\subsubsection{Doom versus virtuous cycles and tipping}
+\label{subsec:doom_virtuous_B}
+
+When the fiscal-capacity constraint binds ($\mu_t>0$), the sign of $\partial B_{t+1}/\partial G_t$ determines whether fiscal
+tightness acts as a deterrent or an additional incentive to invest in adaptation. Intuitively, if $\theta_t<1$, increasing $G_t$
+raises $B_{t+1}$ mechanically and does not generate enough spread relief to offset the debt effect, so the constraint raises the
+effective marginal cost of $G_t$. If $\theta_t>1$, adaptation reduces $B_{t+1}$; a binding constraint then strengthens the incentive
+to invest in $G_t$.
+
+\begin{proposition}[Doom vs.\ virtuous loop under a fiscal-capacity constraint]
+\label{prop:doom_virtuous_regimes}
+Consider the constraint \eqref{eq:debt_limit_B} with multiplier $\mu_t\ge 0$ and define $\theta_t$ as in \eqref{eq:rho_theta_def_B}.
+When the constraint binds ($\mu_t>0$), the economy exhibits:
+(i) a doom-loop region if $\theta_t<1$, in which tighter fiscal capacity reduces $G_t^*$ and reinforces high spreads;
+(ii) a virtuous-cycle region if $\theta_t>1$, in which adaptation improves debt dynamics and fiscal tightness strengthens incentives
+to invest in $G_t$.
+Moreover, tipping/multiplicity is more likely in a neighborhood of $\theta_t\approx 1$ when the feedback between fiscal tightness and
+policy is sufficiently steep (formalized in Corollary~\ref{cor:tipping_B}).
+\end{proposition}
+
+\begin{corollary}[Tipping and local multiplicity]
+\label{cor:tipping_B}
+Let the constrained best response be summarized by $G_t^*=\mathcal{G}(\mu_t;S_t)$ and fiscal tightness by
+$\mu_t=\mathcal{M}(B_{t+1}-\overline B(\Xi_t))$ locally around the boundary, with $\mathcal{M}'(\cdot)>0$.
+If the local feedback satisfies
+\begin{equation}
+\big|\partial \mathcal{G}(\mu_t;S_t)/\partial \mu_t\big|\;
+\big|\mathcal{M}'(\cdot)\big|\;
+\big|1+B_t(\partial s^g_t/\partial G_t)\big|
+>1,
+\label{eq:tipping_condition_B}
+\end{equation}
+then small changes in fiscal tightness can trigger large changes in optimal adaptation (tipping), and the model can exhibit
+locally multiple equilibria.
+\end{corollary}
+
+\renewcommand{\thefigure}{T.\arabic{figure}}
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={group size=2 by 1, horizontal sep=1.15cm},
+    scale only axis,
+    width=0.46\linewidth,
+    height=0.58\linewidth,
+    xmin=0, xmax=2.2,
+    ymin=0, ymax=2.2,
+    axis lines=left,
+    xtick={0,1,2},
+    ytick={0,1,2},
+    ticklabel style={font=\scriptsize},
+    label style={font=\small},
+    xlabel={$\theta_t$},
+]
+
+%========================
+% Panel A: mu=0
+%========================
+\nextgroupplot[
+    title={Panel A: Unconstrained ($\mu_t=0$)},
+    title style={font=\small, yshift=2pt},
+    ylabel={$\rho_t$},
+]
+
+% reference vertical line theta=1 (thin dashed)
+\addplot[gray!70, thin, dashed] coordinates {(1,0) (1,2.2)};
+
+% horizontal threshold rho=1 (thick)
+\addplot[black, thick] coordinates {(0,1) (2.2,1)};
+
+% shade rho regions
+\path[fill=gray!15] (axis cs:0,0) rectangle (axis cs:2.2,1);
+\path[fill=gray!05, postaction={pattern=north east lines}] (axis cs:0,1) rectangle (axis cs:2.2,2.2);
+
+% minimal labels
+\node[font=\scriptsize] at (axis cs:2.02,1.10) {$\rho_t\ge 1$};
+\node[font=\scriptsize] at (axis cs:2.02,0.12) {$\rho_t<1$};
+\node[font=\scriptsize, align=left, text width=3.0cm] at (axis cs:0.08,2.08)
+{self-financing\\on impact};
+
+%========================
+% Panel B: mu>0
+%========================
+\nextgroupplot[
+    title={Panel B: Binding fiscal capacity ($\mu_t>0$)},
+    title style={font=\small, yshift=2pt},
+    ylabel={}, % do NOT repeat ylabel on the right panel
+]
+
+% main boundaries
+\addplot[black, thick] coordinates {(1,0) (1,2.2)};      % theta=1 (Prop 7)
+\addplot[black, thick] coordinates {(0,1) (2.2,1)};      % rho=1 (Cor 4)
+
+% doom vs virtuous shading (left vs right)
+\path[fill=gray!18] (axis cs:0,0) rectangle (axis cs:1,2.2);     % doom side
+\path[fill=gray!05] (axis cs:1,0) rectangle (axis cs:2.2,2.2);   % virtuous side
+
+% overlay self-financing region with pattern (rho>=1)
+\path[fill=none, postaction={pattern=north east lines}] (axis cs:0,1) rectangle (axis cs:2.2,2.2);
+
+% tipping band around theta=1 (illustrative)
+\path[fill=gray!45, opacity=0.16] (axis cs:0.95,0) rectangle (axis cs:1.05,2.2);
+\addplot[black, dashed] coordinates {(0.95,0) (0.95,2.2)};
+\addplot[black, dashed] coordinates {(1.05,0) (1.05,2.2)};
+\node[font=\scriptsize] at (axis cs:1.12,0.12) {tipping};
+
+% ultra-compact labels (no quadrant phrases)
+\node[font=\scriptsize] at (axis cs:0.30,2.05) {Doom};
+\node[font=\scriptsize] at (axis cs:1.55,2.05) {Virtuous};
+\node[font=\scriptsize] at (axis cs:2.02,1.10) {$\rho_t\ge 1$};
+\node[font=\scriptsize] at (axis cs:2.02,0.12) {$\rho_t<1$};
+
+% optional quadrant markers (I--IV) for easy referencing without clutter
+\node[font=\scriptsize] at (axis cs:0.10,1.90) {I};
+\node[font=\scriptsize] at (axis cs:1.12,1.90) {II};
+\node[font=\scriptsize] at (axis cs:0.10,0.90) {III};
+\node[font=\scriptsize] at (axis cs:1.12,0.90) {IV};
+
+% arrow: corporate channel / credibility pushes (theta, rho) up
+\draw[-{Stealth[length=2.8mm]}, thick] (axis cs:0.55,0.55) -- (axis cs:1.35,1.35);
+\node[font=\scriptsize, align=left, text width=2.6cm] at (axis cs:0.58,1.05)
+{corp.\ channel\\pushes $\theta,\rho\uparrow$};
+
+\end{groupplot}
+\end{tikzpicture}
+
+\caption{Regime map accompanying Proposition~\ref{prop:doom_virtuous_regimes}.
+Panel A ($\mu_t=0$) emphasizes the self-financing threshold $\rho_t=1$.
+Panel B ($\mu_t>0$) highlights the doom vs.\ virtuous boundary at $\theta_t=1$;
+the shaded band around $\theta_t\approx 1$ is illustrative of where tipping/multiplicity is more likely under strong feedback
+(Corollary~6). In Panel B, quadrants I--IV follow the standard convention (upper-left, upper-right, lower-left, lower-right).}
+\label{fig:regime_map_two_panel_clean}
+\end{figure}
+
+
+
+
+Figure~\ref{fig:regime_map_two_panel_clean} summarizes the identification logic in a two-panel regime map.
+Panel A ($\mu_t=0$) highlights the role of $\rho_t$ for the contemporaneous fiscal return to adaptation. Panel B ($\mu_t>0$) highlights
+the doom versus virtuous boundary at $\theta_t=1$, with a narrow band around $\theta_t\approx 1$ illustrating heightened tipping risk.
+
+\subsubsection{Corporate channel and public--private complementarity}
+\label{subsec:corporate_channel_B}
+
+The corporate channel expands the virtuous region through two effects captured by \eqref{eq:rho_theta_def_B}.
+First, by reducing aggregate corporate spreads, adaptation releases private resources absorbed by financing frictions, increasing
+$\rho_t$ through $\Psi_{\bar s^c}(-\partial \bar s^c_t/\partial G_t)$. Second, improved private financial conditions can feed back into
+sovereign risk, strengthening the sovereign spread response $-\partial s^g_t/\partial G_t$ and increasing $\theta_t$.
+In the regime map, these effects shift the economy upward and to the right, making self-financing on impact more likely and reducing the
+set of states in which fiscal tightness triggers a doom loop.
+
+
+
+
+
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\input{empirical_best2_section}
+
+\clearpage
+\bibliographystyle{apalike}  % 或 plainnat / abbrvnat，按期刊要求换
+\bibliography{ref}          % 对应 ref.bib（不要写 .bib 后缀）
+
+
+
+
+
+\clearpage
+\appendix
+\setcounter{equation}{0}
+\renewcommand{\theequation}{A.\arabic{equation}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\section{Proofs}
+
+\subsection{Proof of Proposition~\ref{prop:doom_virtuous_regimes}: Doom vs.\ virtuous loop under a fiscal-capacity constraint}
+
+Consider the government's constrained one-period problem at date $t$:
+\begin{equation}
+  V^c(S_t)
+  =
+  \max_{G_t\ge 0}
+  \Big\{
+    W_t(S_t,G_t)
+    + \beta\,\mathbb{E}_t\big[V^c(S_{t+1})\big]
+    + \mu_t\big(\overline B(\Xi_t)-B_{t+1}\big)
+  \Big\},
+  \label{eq:app_constrained_problem}
+\end{equation}
+where $\mu_t\ge 0$ is the multiplier on the fiscal-capacity constraint \eqref{eq:debt_limit_B}, together with the complementarity
+conditions
+\begin{equation}
+  \mu_t\ge 0,
+  \qquad
+  \overline B(\Xi_t)-B_{t+1}\ge 0,
+  \qquad
+  \mu_t\big(\overline B(\Xi_t)-B_{t+1}\big)=0.
+  \label{eq:app_complementarity}
+\end{equation}
+
+For an interior choice of $G_t$, the first-order condition is
+\begin{equation}
+  \frac{\partial W_t}{\partial G_t}
+  + \beta\,\mathbb{E}_t\!\left[
+    V_X^c(S_{t+1})\frac{\partial X_{t+1}}{\partial G_t}
+    +V_B^c(S_{t+1})\frac{\partial B_{t+1}}{\partial G_t}
+    +V_{\Xi}^c(S_{t+1})\frac{\partial \Xi_{t+1}}{\partial G_t}
+  \right]
+  - \mu_t\frac{\partial B_{t+1}}{\partial G_t}
+  =0.
+  \label{eq:app_constrained_foc}
+\end{equation}
+Relative to the unconstrained first-order condition \eqref{eq:FOC_general_B}, the binding fiscal-capacity constraint adds the wedge
+$-\mu_t(\partial B_{t+1}/\partial G_t)$.
+
+Using the debt law of motion in \eqref{eq:dBnext_dG_B} and the definition of $\theta_t$ in \eqref{eq:rho_theta_def_B},
+\begin{equation}
+  \frac{\partial B_{t+1}}{\partial G_t}
+  =
+  1 + B_t\frac{\partial s_t^g}{\partial G_t}
+  =
+  1-\theta_t.
+  \label{eq:app_dB_dG_theta}
+\end{equation}
+Hence \eqref{eq:app_constrained_foc} can be written as
+\begin{equation}
+  H(G_t,\mu_t;S_t)
+  \equiv
+  \mathcal{F}(G_t;S_t) - \mu_t\big(1-\theta_t\big)=0,
+  \label{eq:app_reduced_foc}
+\end{equation}
+where
+\begin{equation}
+  \mathcal{F}(G_t;S_t)
+  \equiv
+  \frac{\partial W_t}{\partial G_t}
+  + \beta\,\mathbb{E}_t\!\left[
+    V_X^c(S_{t+1})\frac{\partial X_{t+1}}{\partial G_t}
+    +V_B^c(S_{t+1})\frac{\partial B_{t+1}}{\partial G_t}
+    +V_{\Xi}^c(S_{t+1})\frac{\partial \Xi_{t+1}}{\partial G_t}
+  \right],
+  \label{eq:app_F_def}
+\end{equation}
+and
+\begin{equation}
+  \theta(G_t;S_t) \equiv B_t\Big(-\frac{\partial s_t^g}{\partial G_t}\Big).
+  \label{eq:app_theta_function}
+\end{equation}
+
+Assume the strengthened local second-order/regularity condition
+\begin{equation}
+  H_G(G_t^*,\mu_t;S_t) <0,
+  \label{eq:app_soc}
+\end{equation}
+ Applying the implicit function theorem to \eqref{eq:app_reduced_foc} yields
+\begin{equation}
+  \frac{\partial G_t^*}{\partial \mu_t}
+  =
+  -\frac{H_{\mu}(G_t^*,\mu_t;S_t)}{H_G(G_t^*,\mu_t;S_t)}
+  =
+  \frac{1-\theta_t}{H_G(G_t^*,\mu_t;S_t)},
+  \label{eq:app_dG_dmu}
+\end{equation}
+where $\theta_t\equiv \theta(G_t^*;S_t)$ is evaluated at the optimum. Because the denominator is negative by \eqref{eq:app_soc},
+the sign of $\partial G_t^*/\partial \mu_t$ is the opposite of the sign of $1-\theta_t$. 
+
+This proves Proposition~\ref{prop:doom_virtuous_regimes}. \hfill $\square$
+
+\subsection{Proof of Corollary~\ref{cor:tipping_B}: Tipping and local multiplicity}
+The local equilibrium choice of adaptation solves the fixed-point problem
+\begin{equation}
+  G_t
+  =
+  \mathcal{T}(G_t;S_t)
+  \equiv
+  \mathcal{G}\!\left(\mathcal{M}\big( B_{t+1}-\overline B(\Xi_t)\big);S_t\right).
+  \label{eq:app_fixed_point}
+\end{equation}
+
+Differentiating \eqref{eq:app_fixed_point} with respect to $G_t$ and applying the chain rule gives, at a local fixed point $G_t^*$,
+\begin{equation}
+  \mathcal{T}_G(G_t^*;S_t)
+  =
+  \frac{\partial \mathcal{G}(\mu_t;S_t)}{\partial \mu_t}
+  \cdot
+  \mathcal{M}'\!(\cdot)
+  \cdot
+  \frac{\partial B_{t+1}}{\partial G_t}.
+  \label{eq:app_Tprime_step1}
+\end{equation}
+Using \eqref{eq:dBnext_dG_B},
+\begin{equation}
+  \frac{\partial B_{t+1}}{\partial G_t}
+  =
+  1+B_t\frac{\partial s_t^g}{\partial G_t},
+  \label{eq:app_Tprime_step2}
+\end{equation}
+so
+\begin{equation}
+  \big|\mathcal{T}_G(G_t^*;S_t)\big|
+  =
+  \big|\partial \mathcal{G}(\mu_t;S_t)/\partial \mu_t\big|
+  \big|\mathcal{M}'(\cdot)\big|
+  \big|1+B_t(\partial s_t^g/\partial G_t)\big|.
+  \label{eq:app_Tprime_final}
+\end{equation}
+Therefore condition \eqref{eq:tipping_condition_B} is exactly the statement that
+\begin{equation}
+  \big|\mathcal{T}_G(G_t^*;S_t)\big|>1.
+  \label{eq:app_noncontraction}
+\end{equation}
+oh'g
+
+This proves Corollary~\ref{cor:tipping_B}. \hfill $\square$
+
+
+
+
+
+
+
+
+
+
+
+
+\input{empirical_best2_appendix}
+
+\end{document}

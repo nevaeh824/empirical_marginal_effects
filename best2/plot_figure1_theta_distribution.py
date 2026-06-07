@@ -111,7 +111,7 @@ def main():
         figsize=(11.2, 4.9),
         gridspec_kw={"width_ratios": [1.05, 1.25], "wspace": 0.30},
     )
-    fig.subplots_adjust(left=0.075, right=0.985, top=0.89, bottom=0.16)
+    fig.subplots_adjust(left=0.075, right=0.985, top=0.89, bottom=0.13)
 
     ax = axes[0]
     style_axis(ax)
@@ -212,19 +212,6 @@ def main():
         va="center",
         fontsize=8.3,
         color=TOKENS["neutral_dark"],
-    )
-
-    fig.text(
-        0.075,
-        0.035,
-        (
-            "Notes: The cutoff is the RSS-minimizing cutoff from the kinked marginal-effect model "
-            "without direct theta controls. Country means use the full-interaction theta estimation sample."
-        ),
-        ha="left",
-        va="bottom",
-        fontsize=7.8,
-        color=TOKENS["muted"],
     )
 
     for path in [PNG_PATH, PDF_PATH, SVG_PATH]:

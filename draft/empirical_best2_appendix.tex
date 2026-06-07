@@ -1,0 +1,238 @@
+\clearpage
+\setcounter{table}{0}
+\renewcommand{\thetable}{B.\arabic{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{B.\arabic{figure}}
+\setcounter{equation}{0}
+\renewcommand{\theequation}{B.\arabic{equation}}
+
+\section{Additional Empirical Results}
+\label{appendixB}
+
+This appendix reports control-set variants for the debt-change and single-crossing kink specifications. The main text treats the without-theta-controls kink model with $\mathbf{Z}_{it}$ controls as the preferred specification. The no-theta-controls kink specification displays the clearest single-crossing pattern. Specifications with direct theta controls preserve the positive low-theta effect but attenuate the high-theta debt-improving effect, suggesting that the evidence is strongest when $\widehat\theta^F_{it}$ is used as the sorting index rather than absorbed directly as an additional control.
+
+\begin{table}[H]\centering
+\caption{Debt-Change Model Control-Set Variants}
+\label{tab:app_debt_change_control_variants}
+\begin{threeparttable}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.02}
+\textbf{Panel A. Baseline debt-change model}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+Control set & $\mathbf{Z}+B+X$ & $B+X$ & None \\
+\midrule
+$G_{it}$ & -0.024 & -0.069 & -0.030 \\
+ & (-0.569) & (-1.513) & (-0.577) \\
+$B_{it}$ & -0.093*** & -0.098*** &  \\
+ & (-3.839) & (-4.607) &  \\
+$X_{it}$ & -0.143 & -0.492*** &  \\
+ & (-1.241) & (-4.306) &  \\
+\midrule
+Controls $\mathbf{Z}_{it}$ & Yes & No & No \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Adjusted $R^2$ & 0.449 & 0.372 & 0.327 \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.35em}
+\textbf{Panel B. Continuous theta interaction model}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+Control set & $\mathbf{Z}+B+X$ & $B+X$ & None \\
+\midrule
+$G_{it}$ & -0.016 & -0.056 & 0.010 \\
+ & (-0.370) & (-1.166) & (0.182) \\
+$G_{it}\times\widehat{\theta}^{F}_{it}$ & -0.250 & -0.432 & -1.236*** \\
+ & (-0.576) & (-1.009) & (-3.504) \\
+$B_{it}$ & -0.086*** & -0.087*** &  \\
+ & (-2.675) & (-3.183) &  \\
+$X_{it}$ & -0.118 & -0.457*** &  \\
+ & (-0.974) & (-3.981) &  \\
+\midrule
+Controls $\mathbf{Z}_{it}$ & Yes & No & No \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Adjusted $R^2$ & 0.449 & 0.373 & 0.346 \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.35em}
+\textbf{Panel C. Full-theta dynamics model}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+Control set & $\mathbf{Z}+B+X$ & $B+X$ & None \\
+\midrule
+$G_{it}$ & -0.021 & -0.077 & 0.038 \\
+ & (-0.473) & (-1.615) & (0.728) \\
+$G_{it}\times\widehat{\theta}^{F}_{it}$ & -0.133 & 0.062 & -0.302 \\
+ & (-0.267) & (0.138) & (-0.674) \\
+$\widehat{\theta}^{F}_{it}$ & -0.044 & -0.188*** & -0.194*** \\
+ & (-0.584) & (-2.727) & (-3.320) \\
+$B_{it}$ & -0.076** & -0.035 &  \\
+ & (-2.369) & (-1.130) &  \\
+$X_{it}$ & -0.146 & -0.538*** &  \\
+ & (-1.088) & (-4.311) &  \\
+\midrule
+Controls $\mathbf{Z}_{it}$ & Yes & No & No \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Adjusted $R^2$ & 0.449 & 0.383 & 0.367 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Each specification includes country and year fixed effects. Robust $t$-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+For the $\mathbf{Z}_{it}+B_{it}+X_{it}$ version reported in Table~\ref{tab:app_kink_notheta_controls}, the without-theta-controls kink specification is
+\begin{equation}
+\begin{aligned}
+\Delta B_{i,t+1}
+&=
+\alpha_i+\tau_t
++aG_{it}(c-\widehat\theta^F_{it})_+
++bG_{it}(\widehat\theta^F_{it}-c)_+ \\
+&\quad
++\delta_B B_{it}
++\delta_X X_{it}
++\boldsymbol{\Gamma}'\mathbf{Z}_{it}
++\varepsilon_{it}.
+\end{aligned}
+\label{eq:app_kink_notheta_zbx}
+\end{equation}
+
+\begin{table}[H]\centering
+\caption{Single-Crossing Kink without Theta Controls: Control-Set Variants}
+\label{tab:app_kink_notheta_controls}
+\begin{threeparttable}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabularx}{0.92\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+Control set & $\mathbf{Z}+B+X$ & $B+X$ & None \\
+\midrule
+$G_{it}(c-\widehat\theta^F_{it})_+$ & 3.402** & 3.583 & 4.343** \\
+$p(a>0)$ & 0.010 & 0.052 & 0.005 \\
+$G_{it}(\widehat\theta^F_{it}-c)_+$ & -0.154 & -0.345 & -1.061*** \\
+$p(b<0)$ & 0.360 & 0.205 & 0.001 \\
+\midrule
+RSS cutoff & 0.004 & -0.003 & 0.006 \\
+Sign-consistent & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Adjusted $R^2$ & 0.452 & 0.375 & 0.351 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: These variants keep the main without-theta-controls kink structure but vary the additional controls. The preferred main-text cutoff remains the $\mathbf{Z}_{it}$-controls specification. Reported $p$-values are one-sided tests for the sign restriction. *** $p<0.01$, ** $p<0.05$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+For the $\mathbf{Z}_{it}+B_{it}+X_{it}$ version corresponding to Table~\ref{tab:app_kink_withtheta_main}, the kink specification with direct theta controls is
+\begin{equation}
+\begin{aligned}
+\Delta B_{i,t+1}
+&=
+\alpha_i+\tau_t
++aG_{it}(c-\widehat\theta^F_{it})_+
++bG_{it}(\widehat\theta^F_{it}-c)_+ \\
+&\quad
++\rho_1\widehat\theta^F_{it}
++\rho_2(\widehat\theta^F_{it}-c)_+
++\delta_B B_{it}
++\delta_X X_{it}
++\boldsymbol{\Gamma}'\mathbf{Z}_{it}
++\varepsilon_{it}.
+\end{aligned}
+\label{eq:app_kink_withtheta_zbx_main}
+\end{equation}
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Single-Crossing Kink with Theta Controls}
+\label{tab:app_kink_withtheta_main}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabularx}{0.78\textwidth}{lY}
+\toprule
+Dependent variable & $B_{i,t+1}-B_{it}$ \\
+\midrule
+$G_{it}(c-\widehat\theta^F_{it})_+$ & 3.560*** \\
+ & (3.163) \\
+$G_{it}(\widehat\theta^F_{it}-c)_+$ & -0.113 \\
+ & (-0.233) \\
+\midrule
+Direct theta controls & Yes \\
+Cutoff $c$ & 0.004 \\
+RSS & 1.889 \\
+Share below cutoff & 0.350 \\
+Selection rule & RSS minimum; sign-consistent \\
+Controls $\mathbf{Z}_{it}$ & Yes \\
+Country FE & Yes \\
+Year FE & Yes \\
+Observations & 1,060 \\
+Adjusted $R^2$ & 0.452 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: This appendix version includes $\widehat{\theta}^{F}_{it}$ and $(\widehat{\theta}^{F}_{it}-c)_+$ as direct controls. The low-theta coefficient remains positive and significant, but the high-theta debt-improving coefficient is much weaker. Robust $t$-statistics are reported in parentheses. *** $p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+For the $\mathbf{Z}_{it}+B_{it}+X_{it}$ column reported in Table~\ref{tab:app_kink_withtheta_controls}, the estimated with-theta-controls variant uses the same control-augmented kink equation:
+\begin{equation}
+\begin{aligned}
+\Delta B_{i,t+1}
+&=
+\alpha_i+\tau_t
++aG_{it}(c-\widehat\theta^F_{it})_+
++bG_{it}(\widehat\theta^F_{it}-c)_+ \\
+&\quad
++\rho_1\widehat\theta^F_{it}
++\rho_2(\widehat\theta^F_{it}-c)_+
++\delta_B B_{it}
++\delta_X X_{it}
++\boldsymbol{\Gamma}'\mathbf{Z}_{it}
++\varepsilon_{it}.
+\end{aligned}
+\label{eq:app_kink_withtheta_zbx_variants}
+\end{equation}
+
+\begin{table}[H]\centering
+\caption{Single-Crossing Kink with Theta Controls: Control-Set Variants}
+\label{tab:app_kink_withtheta_controls}
+\begin{threeparttable}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabularx}{0.92\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+Control set & $\mathbf{Z}+B+X$ & $B+X$ & None \\
+\midrule
+$G_{it}(c-\widehat\theta^F_{it})_+$ & 3.303* & 2.576 & 5.873*** \\
+$p(a>0)$ & 0.044 & 0.075 & 0.000 \\
+$G_{it}(\widehat\theta^F_{it}-c)_+$ & -0.101 & 0.018 & -0.020 \\
+$p(b<0)$ & 0.416 & 0.516 & 0.482 \\
+\midrule
+RSS cutoff & -0.012 & -0.004 & -0.004 \\
+Sign-consistent & Yes & No & Yes \\
+Direct theta controls & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Adjusted $R^2$ & 0.456 & 0.401 & 0.387 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: These variants keep direct theta controls and vary the additional controls across $\mathbf{Z}_{it}+B_{it}+X_{it}$, $B_{it}+X_{it}$, and no controls. Reported $p$-values are one-sided tests for the sign restriction. *** $p<0.01$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
