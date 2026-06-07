@@ -1,0 +1,36 @@
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Full-Interaction Spread Model for Empirical Theta}
+\label{tab:fullinteraction_theta_regression}
+\scriptsize
+\begin{tabularx}{\textwidth}{lY}
+\toprule
+Dependent variable & \multicolumn{1}{c}{10-year sovereign spread, $$s^g_{it}$$} \\
+\cmidrule(lr){2-2}
+Specification & (1) \\
+\midrule
+$$G_{it}$$ & 0.319*** \\
+ & (4.651) \\
+$$B_{it}$$ & 0.070*** \\
+ & (7.456) \\
+$$X_{it}$$ & 0.086* \\
+ & (1.900) \\
+$$G_{it}\times B_{it}$$ & -0.266*** \\
+ & (-5.723) \\
+$$G_{it}\times X_{it}$$ & 0.339** \\
+ & (2.255) \\
+\midrule
+Controls & Yes \\
+$$G_{it}\times Z_{it}$$ controls & Yes \\
+Country FE & Yes \\
+Year FE & Yes \\
+Countries & 60 \\
+Observations & 1,120 \\
+Adjusted $$R^2$$ & 0.911 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Robust t-statistics are reported in parentheses. *** $$p<0.01$$, ** $$p<0.05$$, * $$p<0.10$$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

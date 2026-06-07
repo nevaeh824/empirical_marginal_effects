@@ -1,0 +1,437 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\setstretch{1.12}
+\captionsetup{font=small,labelfont=bf}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.2em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.2em,topsep=0.2em}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\emergencystretch=2em
+
+\theoremstyle{definition}
+\newtheorem*{propTwo}{Proposition 2 (Climate adaptation and sovereign financing costs)}
+\newtheorem*{corOne}{Corollary 1 (Cross-sectional heterogeneity in sovereign spread relief)}
+\newtheorem*{corFive}{Corollary 5 (Debt-improving (constraint-relaxing) condition)}
+
+\begin{document}
+
+\section{Empirical Analysis}
+
+This section tests the sovereign-debt implications of the model using the updated standalone empirical specification. The empirical counterpart of relative adaptation readiness, $G_{it}$, is measured as $0.01\times\texttt{readiness\_delta100}$. The delta score is not a time change in readiness; it is GDP-adjusted readiness performance, so a higher value means that a country is more ready to absorb and use adaptation-related investment than would be predicted by its GDP per capita and year. The vulnerability variable, $X_{it}$, is measured as $0.01\times\texttt{vulnerability\_delta100}$. Because raw ND-GAIN vulnerability is worse when higher, a higher vulnerability-delta score means lower-than-predicted vulnerability, or better relative vulnerability performance, rather than greater physical climate exposure. Sovereign indebtedness, $B_{it}$, is $0.01\times\texttt{debt\_gdp}$, and the sovereign spread, $s_{it}$, is $0.01\times\texttt{bond\_spreads}$. The control vector is $Z_{it}=\{\texttt{lnrgdp},\texttt{growth},\texttt{inflation\_cpi},\texttt{OB\_gdp},\texttt{reserves},\texttt{gee},\texttt{rqe},\texttt{tt}\}$, with each control scaled by 0.01 before estimation. All regressions exclude the United States, use the 1995--2023 panel, include country and year fixed effects unless otherwise stated, and report robust $t$-statistics.
+
+\subsection{Baseline Spread Evidence}
+
+The baseline tests are guided by the following theoretical predictions.
+
+\begin{propTwo}
+Suppose that:
+\begin{enumerate}
+    \item $\Lambda^g$ satisfies the monotonicity conditions in (8);
+    \item $G$ affects the climate dynamics through (1)--(2);
+    \item the stochastic discount factor satisfies (5).
+\end{enumerate}
+Then, holding $(X_t,B_t)$ fixed, the sovereign spread $s^g_t$ is decreasing in $G_t$:
+\begin{equation}
+\frac{\partial s^g_t}{\partial G_t}<0.
+\end{equation}
+The total effect can be decomposed into
+\begin{equation}
+\frac{\partial s^g_t}{\partial G_t}
+=
+\underbrace{\frac{\partial \lambda^{g,P}_t}{\partial G_t}}_{<0,\ \text{expected loss effect}}
++
+\underbrace{\frac{\partial \beta^g_X(G_t)}{\partial G_t}\lambda_X(G_t)
++\beta^g_X(G_t)\frac{\partial \lambda_X(G_t)}{\partial G_t}}_{\leq 0,\ \text{risk premium effect}}.
+\end{equation}
+\textit{Proof sketch.} The expected-loss effect follows directly from (7)--(8). The risk-premium effect arises because $G$ reduces both the variance of $X_{t+1}$ and its persistence, thereby lowering the sovereign bond's exposure $\beta^g_X(G)$, and because the market price of climate risk $\lambda_X(G)$ is decreasing in the volatility of $X_{t+1}$ given (5). A formal derivation is provided in Appendix XX.
+\end{propTwo}
+
+\begin{corOne}
+The impact of adaptation investment $G_t$ on sovereign spreads is stronger when:
+\begin{enumerate}
+    \item the economy is more climate-exposed, i.e., has a higher $d_X$ in (3); and/or
+    \item the government debt level $B_t$ is higher, so that a given reduction in default intensity generates a larger change in expected loss.
+\end{enumerate}
+\end{corOne}
+
+To test Proposition 2, I estimate fixed-effects spread regressions of the form
+\begin{equation}
+    s_{it}=\alpha_i+\tau_t+\beta_G G_{it}+\beta_B B_{it}+\beta_X X_{it}+\Gamma'Z_{it}+u_{it},
+\end{equation}
+where $\alpha_i$ and $\tau_t$ denote country and year fixed effects. Table \ref{tab:baseline_periods} shows that higher GDP-adjusted readiness performance is negatively associated with sovereign spreads. In the controlled baseline specification, the coefficient on $G_{it}$ is $-0.046$ with a $t$-statistic of $-2.804$, significant at the 1 percent level. Debt-to-GDP remains a strong positive predictor of sovereign spreads. The coefficient on $X_{it}$ is also negative and significant; given the ND-GAIN delta direction, this means that countries whose vulnerability is lower than predicted by their income level tend to have lower spreads, rather than that greater raw vulnerability lowers spreads.
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Baseline Fixed-Effects Estimates, 1995--2023}
+\label{tab:baseline_periods}
+\scriptsize
+\begin{tabularx}{\textwidth}{lY}
+\toprule
+Dependent variable & \multicolumn{1}{c}{10-year sovereign spread, $s^g_{it}$} \\
+\cmidrule(lr){2-2}
+Specification & G+B+X + controls \\
+\midrule
+$G_{it}$ & -0.046*** \\
+  & (-2.804) \\
+$B_{it}$ & 0.043*** \\
+  & (6.042) \\
+$X_{it}$ & -0.087*** \\
+  & (-2.626) \\
+\midrule
+Controls & Yes \\
+Country FE & Yes \\
+Year FE & Yes \\
+Sample period & 1995--2023 \\
+Countries & 60 \\
+Observations & 1,120 \\
+Adjusted $R^2$ & 0.900 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+I then test the cross-sectional implications in Corollary 1 by allowing the marginal effect of GDP-adjusted readiness performance to vary with debt and GDP-adjusted vulnerability performance:
+\begin{align}
+    s_{it}=&\alpha_i+\tau_t+\beta_G G_{it}+\beta_B B_{it}+\beta_X X_{it}
+    +\beta_{GB}(G_{it}B_{it})+\beta_{GX}(G_{it}X_{it})+\Gamma'Z_{it}+u_{it}.
+\end{align}
+Table \ref{tab:heterogeneity_theta} supports debt heterogeneity and shows a more nuanced role for the GDP-adjusted vulnerability measure. The debt interaction is negative and statistically significant in both the debt-heterogeneity model and the full-interaction model. In the full-interaction model, $G_{it}\times B_{it}$ is $-0.221$ with a $t$-statistic of $-4.892$, implying that the spread-reducing effect of readiness performance becomes stronger at higher debt levels. The interaction $G_{it}\times X_{it}$ is positive and significant in the full-interaction model, $0.268$ with a $t$-statistic of $2.302$. Because higher $X_{it}$ means better-than-predicted vulnerability performance, this sign should be read as attenuation of the readiness-spread effect among countries that are already less vulnerable than their GDP would predict. It is not evidence that readiness has a weaker effect in countries with greater raw climate vulnerability.
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Debt and GDP-Adjusted Vulnerability Heterogeneity in Sovereign Spread Estimates}
+\label{tab:heterogeneity_theta}
+\scriptsize
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{10-year sovereign spread, $s^g_{it}$} \\
+\cmidrule(lr){2-4}
+Specification & Debt channel & Vulnerability-performance channel & Full interaction \\
+\midrule
+$G_{it}$ & 0.053** & -0.046*** & 0.058** \\
+  & (2.116) & (-2.791) & (2.271) \\
+$B_{it}$ & 0.062*** & 0.044*** & 0.064*** \\
+  & (6.922) & (6.056) & (6.995) \\
+$X_{it}$ & -0.052 & -0.084** & -0.043 \\
+  & (-1.562) & (-2.485) & (-1.244) \\
+$G_{it}\times B_{it}$ & -0.211*** &  & -0.221*** \\
+  & (-4.795) &  & (-4.892) \\
+$G_{it}\times X_{it}$ &  & 0.121 & 0.268** \\
+  &  & (1.196) & (2.302) \\
+\midrule
+Controls & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes \\
+Countries & 60 & 60 & 60 \\
+Observations & 1,120 & 1,120 & 1,120 \\
+Adjusted $R^2$ & 0.905 & 0.900 & 0.906 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\subsection{Debt-Change Diagnostics}
+
+The debt-change diagnostics examine whether the spread-compression channel is strong enough to improve subsequent debt dynamics. The relevant theoretical benchmark is Corollary 5.
+
+\begin{corFive}
+Under the debt dynamics (24), adaptation relaxes the debt limit (31), i.e., lowers $B_{t+1}$, if and only if
+\begin{equation}
+\frac{\partial B_{t+1}}{\partial G_t}<0
+\quad\Longleftrightarrow\quad
+1+B_t\frac{\partial s^g_t}{\partial G_t}<0
+\quad\Longleftrightarrow\quad
+B_t\left(-\frac{\partial s^g_t}{\partial G_t}\right)>1.
+\end{equation}
+When this condition holds, even if the fiscal-capacity constraint binds, a higher $G_t$ reduces next-period debt through spread relief, pushing $\mu_t$ down and supporting a virtuous policy-finance feedback. When this condition holds, even if $\mu_t>0$, the fiscal-space wedge in (34) becomes negative, turning the fiscal constraint into an additional incentive to invest in $G_t$.
+\end{corFive}
+
+I operationalize Corollary 5 by constructing a full-interaction empirical theta index. The spread model used to construct theta is
+\begin{equation}
+\begin{split}
+    s_{it}=&\alpha_i+\tau_t+\beta_GG_{it}+\beta_BB_{it}+\beta_{GB}G_{it}B_{it}+\beta_{GX}G_{it}X_{it}+\beta_XX_{it} \\
+    &+\Gamma'Z_{it}+\Gamma_{GZ}'(G_{it}\cdot Z_{it})+u_{it}.
+\end{split}
+\end{equation}
+The estimated marginal spread response to readiness is
+\begin{equation}
+    \frac{\partial \widehat{s}_{it}}{\partial G_{it}}
+    =\widehat{\beta}_G+\widehat{\beta}_{GB}B_{it}+\widehat{\beta}_{GX}X_{it}+\widehat{\Gamma}_{GZ}'Z_{it},
+\end{equation}
+and the empirical spread-relief and debt-improvement indexes are
+\begin{equation}
+    \widehat{m}^{G,F}_{it}=-\frac{\partial \widehat{s}_{it}}{\partial G_{it}},
+    \qquad
+    \widehat{\theta}^F_{it}=B_{it}\widehat{m}^{G,F}_{it}.
+\end{equation}
+Tables \ref{tab:fullinteraction_theta_regression} and \ref{tab:theta_descriptive_stats} report the spread-model inputs and the resulting empirical theta distribution. The coefficient on $G_{it}\times B_{it}$ is $-0.266$ and significant at the 1 percent level, again indicating that high-debt observations receive larger spread relief from readiness performance. The coefficient on $G_{it}\times X_{it}$ is positive and significant at the 5 percent level, so better GDP-adjusted vulnerability performance attenuates the marginal spread-reducing effect after conditioning on debt and controls. The mean value of $\widehat{\theta}^F_{it}$ is 0.062 and the median is 0.020, so the typical observation is below the theoretical threshold of one. Nevertheless, the distribution is right-skewed, with a maximum of 1.285, which motivates the continuous and regime-based debt-change tests below.
+
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Full-Interaction Spread Model for Empirical Theta}
+\label{tab:fullinteraction_theta_regression}
+\scriptsize
+\begin{tabularx}{\textwidth}{lY}
+\toprule
+Dependent variable & \multicolumn{1}{c}{10-year sovereign spread, $s^g_{it}$} \\
+\cmidrule(lr){2-2}
+Specification & (1) \\
+\midrule
+$G_{it}$ & 0.319*** \\
+ & (4.651) \\
+$B_{it}$ & 0.070*** \\
+ & (7.456) \\
+$X_{it}$ & 0.086* \\
+ & (1.900) \\
+$G_{it}\times B_{it}$ & -0.266*** \\
+ & (-5.723) \\
+$G_{it}\times X_{it}$ & 0.339** \\
+ & (2.255) \\
+\midrule
+Controls & Yes \\
+$G_{it}\times Z_{it}$ controls & Yes \\
+Country FE & Yes \\
+Year FE & Yes \\
+Countries & 60 \\
+Observations & 1,120 \\
+Adjusted $R^2$ & 0.911 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Descriptive Statistics for Full-Interaction Empirical Theta}
+\label{tab:theta_descriptive_stats}
+\scriptsize
+\begin{tabularx}{\textwidth}{lYYYYYY}
+\toprule
+Variable & $N$ & Mean & SD & Median & Min. & Max. \\
+\midrule
+$\widehat{\theta}^{F}_{it}$ & 1,120 & 0.062 & 0.151 & 0.020 & -0.094 & 1.285 \\
+Marginal spread relief, $-\partial s^g/\partial G$ & 1,120 & 0.056 & 0.106 & 0.044 & -0.184 & 0.562 \\
+Marginal spread response, $\partial s^g/\partial G$ & 1,120 & -0.056 & 0.106 & -0.044 & -0.562 & 0.184 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Statistics are computed on the controlled full-interaction spread-model estimation sample.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+I next estimate debt-change specifications using the next-period change in debt-to-GDP, $B_{i,t+1}-B_{it}$, as the dependent variable. The baseline debt-change regression tests whether readiness is associated with lower subsequent debt accumulation. The continuous full-theta specification further tests whether the debt-improving effect is stronger when $\widehat{\theta}^F_{it}$ is larger:
+\begin{equation}
+    B_{i,t+1}-B_{it}=\alpha_i+\tau_t+\lambda_0G_{it}+
+    \lambda_1(G_{it}\widehat{\theta}^F_{it})+\Gamma'Z_{it}+\varepsilon_{it}.
+\end{equation}
+Table \ref{tab:debt_change_combined_fulltheta} shows that the unconditional readiness coefficient is negative but statistically insignificant in the baseline debt-change specification. In the continuous full-theta model, however, the interaction $G_{it}\times\widehat{\theta}^F_{it}$ is $-0.886$ with a $t$-statistic of $-2.707$, significant at the 1 percent level. This is consistent with Corollary 5: readiness is more strongly associated with debt reduction when estimated spread relief, scaled by debt, is larger. When the theta main effect is added, the interaction weakens and becomes insignificant, while the theta main effect is negative and marginally significant. Thus, the evidence supports the debt-improving mechanism most clearly in the continuous interaction specification, but the dynamics specification is more cautious.
+
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Debt-Change Dynamics: Baseline and Full-Theta Specifications}
+\label{tab:debt_change_combined_fulltheta}
+\scriptsize
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{$B_{i,t+1}-B_{it}$} \\
+\cmidrule(lr){2-4}
+Specification & Baseline & Continuous Full-theta & Full-theta dynamics \\
+\midrule
+$G_{it}$ & -0.073 & -0.042 & -0.015 \\
+ & (-1.463) & (-0.810) & (-0.302) \\
+$G_{it}\times\widehat{\theta}^{F}_{it}$ &  & -0.886*** & -0.310 \\
+ &  & (-2.707) & (-0.660) \\
+$\widehat{\theta}^{F}_{it}$ &  &  & -0.141* \\
+ &  &  & (-1.898) \\
+Real GDP & 8.143*** & 7.869*** & 5.352*** \\
+ & (5.436) & (5.370) & (2.977) \\
+Real GDP growth & -0.342*** & -0.346*** & -0.392*** \\
+ & (-3.715) & (-3.796) & (-4.179) \\
+CPI inflation & -0.173** & -0.174** & -0.158** \\
+ & (-2.053) & (-2.060) & (-2.070) \\
+Overall balance/GDP & -0.480*** & -0.458*** & -0.416*** \\
+ & (-6.090) & (-5.862) & (-5.204) \\
+International reserves & 0.018 & 0.020 & 0.019 \\
+ & (1.299) & (1.456) & (1.366) \\
+Government effectiveness & -1.777* & -1.396 & -0.601 \\
+ & (-1.895) & (-1.470) & (-0.575) \\
+Regulatory quality & 1.637* & 0.815 & -0.405 \\
+ & (1.857) & (0.907) & (-0.404) \\
+Terms of trade & 0.044*** & 0.037** & 0.037*** \\
+ & (2.845) & (2.484) & (2.584) \\
+\midrule
+Theta main effect & No & No & Yes \\
+Debt control & No & No & No \\
+Controls & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes \\
+$p$-value: $\lambda_0=0$ & 0.144 & 0.418 & 0.763 \\
+$p$-value: $\lambda_1=0$ &  & 0.007 & 0.510 \\
+$p$-value: $\lambda_2=0$ &  &  & 0.058 \\
+Observations & 1,060 & 1,060 & 1,060 \\
+Countries & 60 & 60 & 60 \\
+Adjusted $R^2$ & 0.425 & 0.433 & 0.441 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: The table combines the former Sections 6.2, 6.3, and 7 debt-change specifications. The continuous Full-theta column keeps only the Z-controls specification; debt-control and no-control variants are omitted. Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Table \ref{tab:grouped_heterogeneity_debt} provides the grouped debt-change tests in a single three-panel format. Panel A splits the sample by the full-theta index. The median split shows a statistically insignificant positive readiness coefficient in the low-theta group and a negative, significant coefficient in the high-theta group. Across theta quintiles, the negative coefficients are concentrated in the upper part of the theta distribution: $-0.249$ in the 60--80 percent group and $-0.372$ in the 80--100 percent group. Panel B shows that sorting by the debt ratio alone is not monotone and does not produce statistically significant readiness effects across quintiles. Panel C shows a sharper pattern when the sample is sorted by marginal spread relief: readiness is positive in the lowest marginal-relief quintile, but negative and significant in the highest marginal-relief quintile. Overall, the grouped evidence indicates that the estimated spread-relief channel, rather than debt levels alone, is the more informative sorting variable for subsequent debt dynamics.
+
+
+\begin{table}[H]\centering
+\caption{Grouped Heterogeneity in Debt-Change Dynamics}
+\label{tab:grouped_heterogeneity_debt}
+\begin{threeparttable}
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.14}
+\textbf{Panel A. Full-theta groups}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYYYYYY}
+\toprule
+Dependent variable & \multicolumn{7}{c}{$B_{i,t+1}-B_{it}$} \\
+\cmidrule(lr){2-8}
+Group & Bottom 50\% & Top 50\% & 0--20\% & 20--40\% & 40--60\% & 60--80\% & 80--100\% \\
+\midrule
+$G_{it}$ & 0.082 & -0.265*** & 0.243* & 0.057 & -0.152 & -0.249* & -0.372** \\
+ & (1.552) & (-3.159) & (1.727) & (0.866) & (-1.550) & (-1.770) & (-2.077) \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.75em}
+\textbf{Panel B. Debt-ratio groups}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYYYY}
+\toprule
+Dependent variable & \multicolumn{5}{c}{$B_{i,t+1}-B_{it}$} \\
+\cmidrule(lr){2-6}
+Group & 0--20\% & 20--40\% & 40--60\% & 60--80\% & 80--100\% \\
+\midrule
+$G_{it}$ & 0.060 & -0.116 & -0.067 & 0.038 & -0.363 \\
+ & (0.861) & (-1.336) & (-1.021) & (0.291) & (-1.317) \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.75em}
+\textbf{Panel C. Marginal-relief groups}\\[0.45em]
+\begin{tabularx}{\textwidth}{lYYYYY}
+\toprule
+Dependent variable & \multicolumn{5}{c}{$B_{i,t+1}-B_{it}$} \\
+\cmidrule(lr){2-6}
+Group & 0--20\% & 20--40\% & 40--60\% & 60--80\% & 80--100\% \\
+\midrule
+$G_{it}$ & 0.325** & 0.097 & -0.041 & -0.134 & -0.512*** \\
+ & (2.244) & (0.732) & (-0.426) & (-1.350) & (-3.273) \\
+\midrule
+Controls & Yes & Yes & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes & Yes & Yes \\
+Observations & 212 & 212 & 212 & 212 & 212 \\
+Countries & 25 & 36 & 36 & 34 & 24 \\
+Adjusted $R^2$ & 0.603 & 0.568 & 0.518 & 0.606 & 0.493 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Each column estimates the next-period change in debt/GDP on current GDP-adjusted readiness performance, $G_{it}$, within the indicated subgroup. Macro control coefficients and cutoff values are omitted for compactness. Control, fixed-effect, sample-size, and fit rows are reported only in Panel C. Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Finally, Table \ref{tab:deltaB_rss_cutoff_fulltheta} selects an empirical full-theta cutoff by minimizing the residual sum of squares in a regime-specific debt-change model. The selected cutoff is $\widehat{c}=-0.016$, corresponding to the 13.77th percentile of the theta distribution. The low-theta readiness-performance slope is positive but statistically insignificant, $0.086$ with a $t$-statistic of $1.362$. The above-cutoff theta slope is negative and significant, $-0.130$ with a $t$-statistic of $-2.679$. The equality test rejects equal slopes at the 1 percent level. This threshold result provides regime-based evidence that GDP-adjusted readiness performance is associated with lower subsequent debt accumulation once the estimated spread-relief channel crosses the data-selected cutoff.
+
+
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Full-Theta RSS Cutoff and Debt-Change Dynamics}
+\label{tab:deltaB_rss_cutoff_fulltheta}
+\scriptsize
+\begin{tabularx}{\textwidth}{lY}
+\toprule
+Dependent variable & $B_{i,t+1}-B_{it}$ \\
+\midrule
+$G_{it}\times 1\{\widehat{\theta}^{F}_{it}<\widehat{c}\}$ & 0.086 \\
+ & (1.362) \\
+$G_{it}\times 1\{\widehat{\theta}^{F}_{it}\geq\widehat{c}\}$ & -0.130*** \\
+ & (-2.679) \\
+Real GDP & 9.245*** \\
+ & (6.173) \\
+Real GDP growth & -0.319*** \\
+ & (-3.524) \\
+CPI inflation & -0.179** \\
+ & (-2.152) \\
+Overall balance/GDP & -0.459*** \\
+ & (-6.045) \\
+International reserves & 0.014 \\
+ & (0.983) \\
+Government effectiveness & -1.811* \\
+ & (-1.954) \\
+Regulatory quality & 1.199 \\
+ & (1.366) \\
+Terms of trade & 0.038*** \\
+ & (2.628) \\
+$\lambda_L-\lambda_H$ & 0.216*** \\
+ & (4.212) \\
+\midrule
+RSS-selected cutoff $\widehat{c}$ & -0.016 \\
+Empirical percentile of $\widehat{c}$ & 13.77 \\
+RSS at $\widehat{c}$ & 1.958 \\
+Low-theta observations & 146 \\
+High-theta observations & 914 \\
+Controls & Yes \\
+Country FE & Yes \\
+Year FE & Yes \\
+$p_L$ at RSS cutoff & 0.173 \\
+$p_H$ at RSS cutoff & 0.008 \\
+$p$-value: $\lambda_L=\lambda_H$ & 0.000 \\
+Observations & 1,060 \\
+Countries & 60 \\
+Adjusted $R^2$ & 0.433 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: The RSS cutoff is selected by minimizing RSS over empirical values of $\widehat{\theta}^{F}_{it}$ that leave nonempty low- and high-theta groups. For each candidate cutoff and for the final regression, the model includes regime-specific readiness slopes, the common control vector $Z_{it}$, country fixed effects, and year fixed effects. Robust t-statistics are reported in parentheses. *** $p<0.01$, ** $p<0.05$, * $p<0.10$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\subsection{Empirical Conclusions and Limitations}
+
+The updated results should be interpreted through the construction of the ND-GAIN delta variables. The coefficient on $G_{it}$ does not estimate the pricing effect of the raw readiness level or of a year-to-year change in readiness. It estimates how sovereign spreads and debt dynamics vary with readiness performance relative to what would be expected for a country's GDP per capita and year. The baseline spread result therefore suggests that sovereign markets reward countries whose economic, governance, and social readiness to use adaptation-related investment exceeds the benchmark implied by their income level.
+
+The coefficient on $X_{it}$ and the interaction $G_{it}\times X_{it}$ require the same directional caution. Raw ND-GAIN vulnerability is worse when higher, but the GDP-adjusted vulnerability-delta variable is constructed so that a higher value means lower vulnerability than predicted by income. Thus, the negative baseline coefficient on $X_{it}$ is consistent with lower spreads for countries that are less vulnerable than expected. The positive $G_{it}\times X_{it}$ coefficient should not be described as evidence that readiness has a weaker effect in more climate-vulnerable countries. It is more accurately interpreted as attenuation of the readiness-spread benefit among countries that already display favorable GDP-adjusted vulnerability performance. Equivalently, the spread benefit of readiness performance appears strongest where relative vulnerability performance is weaker, after conditioning on debt and controls.
+
+The clearest support remains the debt-amplification channel. The interaction between readiness performance and debt is negative and significant in the spread regressions, and the full-interaction theta construction also produces a negative and significant readiness--debt interaction. These estimates are consistent with the model's prediction that a given reduction in spreads has larger fiscal value when the sovereign debt stock is higher. The debt-change tests reinforce this interpretation as a threshold mechanism rather than an unconditional one: the baseline readiness-performance coefficient in the debt-change regression is negative but insignificant, while the continuous theta interaction, grouped theta results, marginal-relief groups, and RSS cutoff test all indicate stronger debt reduction when estimated spread relief is large relative to the debt stock.
+
+The substantive conclusion is therefore not simply that ``more adaptation'' lowers debt. It is that countries whose adaptation-readiness institutions and vulnerability outcomes look better than their income level would predict face lower sovereign financing costs, and that this pricing channel translates into improved debt dynamics only when the implied spread relief is sufficiently large. This is a reduced-form interpretation of climate-resilience performance, not a direct estimate of public adaptation spending, physical exposure, or realized climate damages. Future work should separate the ND-GAIN components more explicitly: exposure captures projected physical climate impacts, while sensitivity and adaptive capacity capture socioeconomic fragility and the resources available for adaptation. Using those subcomponents, granular adaptation spending, disaster shocks, and more robust spatial or clustered inference would help distinguish expected-loss effects from risk-premium effects and would sharpen the link between the model's climate-risk state variable and the empirical ND-GAIN proxies.
+
+\end{document}
