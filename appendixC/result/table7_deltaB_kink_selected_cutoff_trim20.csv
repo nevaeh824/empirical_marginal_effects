@@ -1,0 +1,3 @@
+selection_rule,cutoff,rss,sign_ok,N_model,N_countries,share_low,share_high,b_low,se_low,t_low,p_low,p_low_positive,b_high,se_high,t_high,p_high,p_high_negative,r2
+rss_min_cutoff,.1003036765842769,1.8989736,0,1060,60,.80000001,.2,.63334429,.52983296,1.195366,.23223741,.11611871,.39419591,.63388395,.62187392,.53417152,.73291427,.44921705
+sign_consistent_cutoff,,,,,,,,,,,,,,,,,,

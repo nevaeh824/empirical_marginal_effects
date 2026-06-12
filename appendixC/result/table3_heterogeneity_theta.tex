@@ -1,0 +1,35 @@
+\begin{table}[H]\centering
+\begin{threeparttable}
+\caption{Debt and Climate-Risk Heterogeneity in Sovereign Spread Estimates}
+\label{tab:heterogeneity_theta}
+\scriptsize
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+Dependent variable & \multicolumn{3}{c}{10-year sovereign spread, $$s^g_{it}$$} \\
+\cmidrule(lr){2-4}
+Specification & Debt heterogeneity Controls & Climate-risk heterogeneity Controls & Full interaction Controls \\
+\midrule
+$$G_{it}$$ & 0.069*** & -0.062 & 0.063 \\
+  & (3.233) & (-0.803) & (0.815) \\
+$$B_{it}$$ & 0.196*** & 0.045*** & 0.196*** \\
+  & (8.760) & (6.469) & (8.749) \\
+$$X_{it}$$ & 0.074 & -0.002 & 0.068 \\
+  & (1.067) & (-0.018) & (0.560) \\
+$$G_{it}\times B_{it}$$ & -0.276*** &  & -0.276*** \\
+  & (-7.734) &  & (-7.734) \\
+$$G_{it}\times X_{it}$$ &  & 0.016 & 0.014 \\
+  &  & (0.091) & (0.074) \\
+\midrule
+Controls & Yes & Yes & Yes \\
+Country FE & Yes & Yes & Yes \\
+Year FE & Yes & Yes & Yes \\
+Countries & 60 & 60 & 60 \\
+Observations & 1,120 & 1,120 & 1,120 \\
+Adjusted $$R^2$$ & 0.914 & 0.900 & 0.914 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}[flushleft]\footnotesize
+\item Notes: Robust t-statistics are reported in parentheses. *** $$p<0.01$$, ** $$p<0.05$$, * $$p<0.10$$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
